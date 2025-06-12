@@ -11,7 +11,7 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [person, setPerson] = useState(1);
     const [surface, setSurface] = useState(80);
-    const [chauffage, setChauffage] = useState('');
+    const [heating_system, setheating_system] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const router = useRouter();
@@ -41,7 +41,7 @@ export default function Register() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ user_id: data.userId, person, surface, chauffage}),
+                body: JSON.stringify({ user_id: data.userId, person, surface, heating_system}),
             });
 
             const statData = await statRes.json();
@@ -77,8 +77,8 @@ export default function Register() {
                     <option value={120}>120</option>
                     <option value={140}>140</option>
                 </select>
-                <select value={chauffage} onChange={e => setChauffage(e.target.value)} required>
-                    <option value="" disabled>Type de Chauffage</option>
+                <select value={heating_system} onChange={e => setheating_system(e.target.value)} required>
+                    <option value="" disabled>Type de chauffage</option>
                     <option value="électrique">Électrique</option>
                     <option value="autre">Autre</option>
                 </select>

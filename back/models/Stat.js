@@ -14,7 +14,7 @@ const statSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    chauffage: {
+    heating_system: {
         type: String,
         required: true,
     },

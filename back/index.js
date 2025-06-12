@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const feedbackRoutes = require('./routes/feedback');
 const statRoutes = require('./routes/stats'); // Uncomment if you have a stats route
+const {router: subRoutes} = require('./routes/subscribe');
 
 const app = express();
 const port = 5000;
@@ -26,6 +27,7 @@ mongoose.connect(mongoURI, {
 app.use('/api/auth', authRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/stats', statRoutes); // Uncomment if you have a stats route
+app.use('/api', subRoutes);
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

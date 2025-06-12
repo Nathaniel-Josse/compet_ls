@@ -38,8 +38,8 @@ export default function Consommation() {
 
                     const newData = await newRes.json();
                     localStorage.setItem("token", newData.token);
-                    fetchStats(); // Retry fetching user profile with new token
-                    return;
+                     // Retry fetching user profile with new token
+                    return fetchStats();
                 }
 
                 const profileData = await profileRes.json();
@@ -67,11 +67,10 @@ export default function Consommation() {
                     }
 
                     const newData = await newRes.json();
-                    localStorage.setItem("token", newData.token);
-                    fetchStats(); // Retry fetching user profile with new token
-                    return;
+                    localStorage.setItem("token", newData.token); // Retry fetching user profile with new token
+                    return fetchStats();
                 }
-
+                console.log(statsRes);
                 const data = await statsRes.json();
                 setData(data);
                 if (statsRes.ok) {
@@ -100,8 +99,8 @@ export default function Consommation() {
 
                     const newData = await newRes.json();
                     localStorage.setItem("token", newData.token);
-                    fetchStats(); // Retry fetching user profile with new token
-                    return;    
+                     // Retry fetching user profile with new token
+                    return fetchStats();   
                     }
                 }
                 

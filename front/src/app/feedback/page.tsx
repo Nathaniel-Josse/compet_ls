@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./feedback.module.css";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import Link from "next/link";
 
 export default function Feedback() {
     const [object, setObject] = useState('');
@@ -59,6 +60,7 @@ export default function Feedback() {
             <form className={styles.form} onSubmit={handleSubmit}>
                 <select value={object} onChange={e => setObject(e.target.value)} required>
                     <option value="" disabled>Choisissez un objet</option>
+                    <option value="Retour sur l'application">Problème de connexion</option>
                     <option value="Bug">Bug</option>
                     <option value="Amélioration">Amélioration</option>
                     <option value="Autre">Autre</option>
@@ -66,6 +68,7 @@ export default function Feedback() {
                 <input type="textarea" value={content} onChange={e => setContent(e.target.value)} required placeholder="Votre retour..."/>
                 <button type="submit" ></button>
             </form>
+            <Link href="/">Retour à l&apos;accueil </Link>
         </div>
     )
 }

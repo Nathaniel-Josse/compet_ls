@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Home from './home/home';
+import { subscribeUser } from '../utils/subscribeToPush';
 
 export default function Index() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -19,6 +20,10 @@ export default function Index() {
       setIsAuthenticated(true);
       return;
     };
+
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      subscribeUser();
+    }
 
     checkAuth();
   }, []);

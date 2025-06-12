@@ -4,22 +4,24 @@ const router = express.Router();
 const limits = require('../utils/set_limit.json'); // Assuming limits are stored in a JSON file
 const Stat = require('../models/Stat');
 const jwt = require('jsonwebtoken');
+const { sendPushNotification} = require('../notifications');
+const { subscriptions } = require('./subscribe');
 
 router.post('/add', async (req, res) => {
-    const { user_id, person, surface, chauffage} = req.body;
+    const { user_id, person, surface, heating_system} = req.body;
 
-    if (!user_id || !person || !surface || !chauffage) {
+    if (!user_id || !person || !surface || !heating_system) {
         return res.status(400).json({ message: 'user_id, personNumber, surface, and total_consumption are required' });
     }
 
     try {
-        const set_limit = limits[chauffage][surface][person][1] || 0;
+        const set_limit = limits[heating_system][surface][person][1] || 0;
         const stat = new User({
             user_id: user_id,
             person: person,
             surface : surface,
-            chauffage: chauffage,
-            total_consumed: 0,
+            heating_system: heating_system,
+            total_consumed: [0.00, 0.00, 0.00, 0.00],
             limit: set_limit,
             limit_set_notif: false,
             co2_saved: 0,
@@ -47,8 +49,9 @@ router.post('/add', async (req, res) => {
             if (stats.length === 0) {
                 return res.status(404).json({ message: 'Aucune statistique trouvée pour cet utilisateur' });
             }
-            const min = limits[stats[0].chauffage][stats[0].surface][stats[0].person][0] || 0;
-            const max = limits[stats[0].chauffage][stats[0].surface][stats[0].person][1] || 0;
+
+            const min = limits[stats[0].heating_system][stats[0].surface][stats[0].person][0] || 0;
+            const max = limits[stats[0].heating_system][stats[0].surface][stats[0].person][1] || 0;
 
             const energie = Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -66,6 +69,8 @@ router.post('/add', async (req, res) => {
             if (nowDay !== signupDay) {
 
             }
+            console.log(!stats[0].total_consumed)
+            console.log(stats[0].total_consumed[0] !== 0.00)
 
             if( !stats[0].total_consumed) {
                 currentConsumption = (energie / 24)*1000;
@@ -84,8 +89,8 @@ router.post('/add', async (req, res) => {
                     monthlyConsumption = energie;
                 }
             } else {
-                updateDate = stats[0].updated_at.getDate();
-                updateHour = stats[0].updated_at.getHours();
+                const updateDate = stats[0].updated_at.getDate();
+                const updateHour = stats[0].updated_at.getHours();
                 if (nowDay !== updateDate) {
                     currentConsumption = 0.00 + (energie / 24)*1000;
                     lastDayConsumption = stats[0].total_consumed[1]
@@ -105,6 +110,20 @@ router.post('/add', async (req, res) => {
                 }
             }
 
+            if (stats[0].limit_set_notif === true) {
+                const payload = {
+                    title: 'Alerte consommation',
+                    body: `PLACEHOLDER.`,
+                };
+
+                if (Array.isArray(subscriptions)) {
+                    for (const sub of subscriptions) {
+                        await sendPushNotification(sub, payload);
+                        }
+                    }
+            } else {
+                console.error('Erreur notification:', err);
+            }
 
             res.status(200).json({stats,
                 currentConsumption: currentConsumption.toFixed(2),
@@ -119,7 +138,7 @@ router.post('/add', async (req, res) => {
 
 router.put('/update', async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
-    const { person, surface, chauffage, total_consumed, limit_set_notif, co2_saved, money_saved } = req.body;
+    const { person, surface, heating_system, total_consumed, limit_set_notif, co2_saved, money_saved } = req.body;
 
     if (!token) {
         return res.status(401).json({ message: 'No refresh token provided' });
@@ -133,16 +152,16 @@ router.put('/update', async (req, res) => {
         }
         if (person !== undefined) stat[0].person = person;
         if (surface !== undefined) stat[0].surface = surface;
-        if (chauffage !== undefined) stat[0].chauffage = chauffage;
-        if (person !== undefined || surface !== undefined || chauffage !== undefined) {
-            const set_limit = limits[stat[0].chauffage][stat[0].surface][stat[0].person][1] || 0;
+        if (heating_system !== undefined) stat[0].heating_system = heating_system;
+        if (person !== undefined || surface !== undefined || heating_system !== undefined) {
+            const set_limit = limits[stat[0].heating_system][stat[0].surface][stat[0].person][1] || 0;
             stat.limit = set_limit;
         }
         if (total_consumed !== undefined) stat[0].total_consumed = total_consumed;
-        if (limit_set_notif !== undefined) stat[0].limit_set_notif = limit_set_notif;
+        if (stat[0].total_consumed[3] < stat[0].limit) stat[0].limit_set_notif = true;
         if (co2_saved !== undefined) stat[0].co2_saved = co2_saved;
         if (money_saved !== undefined) stat[0].money_saved = money_saved;
-        if (stat[0].updated_at === undefined) new Date();
+        stat[0].updated_at = new Date();
 
         await stat[0].save();
         res.status(200).json({ message: 'Statistique mise à jour avec succès', stat });
