@@ -14,7 +14,7 @@ export default function Connexion({}) {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         // Here you would typically send a request to your backend to authenticate the user
-        const res = await fetch ('http://localhost:5000/api/auth/login', {
+        const res = await fetch (`${process.env.BACKEND_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

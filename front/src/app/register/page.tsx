@@ -25,7 +25,7 @@ export default function Register() {
             return;
         }
         // Here you would typically send a request to your backend to register the user
-        const res = await fetch('http://localhost:5000/api/auth/register', {
+        const res = await fetch(`${process.env.BACKEND_URL}/api/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export default function Register() {
         const data = await res.json();
 
         if (res.ok) {
-            const statRes = await fetch('http://localhost:5000/api/stats/add', {
+            const statRes = await fetch(`${process.env.BACKEND_URL}/api/stats/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

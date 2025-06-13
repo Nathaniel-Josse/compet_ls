@@ -21,14 +21,14 @@ export default function Profil() {
             if (!token) return;
 
             try {
-                const res = await fetch("http://localhost:5000/api/auth/profile", {
+                const res = await fetch(`${process.env.BACKEND_URL}/api/auth/profile`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
 
                 if (!res.ok) {
-                    const newRes = await fetch("http://localhost:5000/api/auth/refresh-token", {
+                    const newRes = await fetch(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
                         headers: {
                             Authorization: `Bearer ${tokenRefresh }`,
                         },

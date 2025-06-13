@@ -15,7 +15,7 @@ export default function Feedback() {
         const token = localStorage.getItem('token');
         const tokenRefresh = localStorage.getItem('tokenRefresh');
         try {
-            const res = await fetch('http://localhost:5000/api/feedback/add', {
+            const res = await fetch(`${process.env.BACKEND_URL}/api/feedback/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export default function Feedback() {
                 setContent('');
                 router.push('/');
             } else {
-                const newRes = await fetch("http://localhost:5000/api/auth/refresh-token", {
+                const newRes = await fetch(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

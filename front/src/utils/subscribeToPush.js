@@ -13,7 +13,7 @@ export async function subscribeUser() {
     applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY),
   });
 
-  await fetch('http://localhost:5000/api/subscribe', {
+  await fetch(`${process.env.BACKEND_URL}/api/subscribe`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(subscription),
