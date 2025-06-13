@@ -72,7 +72,7 @@ router.post('/add', async (req, res) => {
             console.log(!stats[0].total_consumed)
             console.log(stats[0].total_consumed[0] !== 0.00)
 
-            if( !stats[0].total_consumed) {
+            if(stats[0].total_consumed[0] === 0.00) {
                 currentConsumption = (energie / 24)*1000;
                 dailyConsumption = (currentConsumption/1000) * depuisMinuit;
 
