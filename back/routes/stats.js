@@ -69,9 +69,6 @@ router.post('/add', async (req, res) => {
             if (nowDay !== signupDay) {
 
             }
-            console.log(!stats[0].total_consumed)
-            console.log(stats[0].total_consumed[0] !== 0.00)
-
             if(stats[0].total_consumed[0] === 0.00) {
                 currentConsumption = (energie / 24)*1000;
                 dailyConsumption = (currentConsumption/1000) * depuisMinuit;
@@ -89,6 +86,7 @@ router.post('/add', async (req, res) => {
                     monthlyConsumption = energie;
                 }
             } else {
+                let depuisUpdate = 0;
                 const updateDate = stats[0].updated_at.getDate();
                 const updateHour = stats[0].updated_at.getHours();
                 if (nowDay !== updateDate) {
@@ -98,8 +96,9 @@ router.post('/add', async (req, res) => {
                     monthlyConsumption = stats[0].total_consumed[2] + dailyConsumption;
                     ;
                 } else if (nowHour !== updateHour) {
+                    depuisUpdate = nowHour - updateHour;
                     currentConsumption = stats[0].total_consumed[0] + (energie / 24)*1000;
-                    dailyConsumption = stats[0].total_consumed[1] + (currentConsumption/1000) * depuisMinuit;
+                    dailyConsumption = stats[0].total_consumed[1] + (currentConsumption/1000) * depuisUpdate;
                     monthlyConsumption = stats[0].total_consumed[2] + currentConsumption/1000;
                     lastDayConsumption = stats[0].total_consumed[3];
                 } else {
