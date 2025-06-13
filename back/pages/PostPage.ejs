@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page backend des articles du blog</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Section 1: Add Post Form -->
+    <section>
+        <h2>Ajouter un nouvel article</h2>
+        <form action="/api/posts" method="POST">
+            <label for="title">Titre :</label>
+            <input type="text" id="title" name="title" required />
+
+            <label for="author">Auteur :</label>
+            <input type="text" id="author" name="author" required />
+
+            <label for="content">Contenu :</label>
+            <textarea id="content" name="content" rows="4" required></textarea>
+
+            <label for="picture_link">Lien de l'image d'illustration :</label>
+            <input type="text" id="picture_link" name="picture_link" />
+
+            <label for="created_at">Créé le :</label>
+            <input type="date" id="created_at" name="created_at" required />
+
+            <br><br>
+            <button type="submit">Ajouter l'article</button>
+        </form>
+    </section>
+
+    <!-- Section 2: Display Posts Table -->
+    <section>
+        <h2>Tous les articles</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Contenu</th>
+                    <th>Image</th>
+                    <th>Créé le</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (posts && posts.length > 0) { %>
+                    <% posts.forEach(function(post) { %>
+                        <tr>
+                            <td><%= post.title %></td>
+                            <td><%= post.author %></td>
+                            <td><%= post.content %></td>
+                            <td>
+                                <% if (post.pictureLink) { %>
+                                    <a href="<%= post.pictureLink %>" target="_blank">View</a>
+                                <% } %>
+                            </td>
+                            <td><%= post.createdAt ? post.createdAt.toISOString().slice(0,10) : '' %></td>
+                            <td>
+                                <form action="/api/posts/delete/<%= post._id %>" method="POST" onsubmit="return confirm('Supprimer cet article ?');">
+                                    <button type="submit">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="6">Aucun post disponible.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>
