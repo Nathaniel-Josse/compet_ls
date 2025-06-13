@@ -37,6 +37,10 @@
             <label for="created_at">Créé le :</label>
             <input type="date" id="created_at" name="created_at" required />
 
+            <!-- Section for tags -->
+            <label for="tags">Tags (séparés par des virgules) :</label>
+            <input type="text" id="tags" name="tags" placeholder="ex: societe, consommation, economie" />
+
             <br><br>
             <button type="submit">Ajouter l'article</button>
         </form>
@@ -50,6 +54,7 @@
                 <tr>
                     <th>Titre</th>
                     <th>Auteur</th>
+                    <th>Tags</th>
                     <th>Contenu</th>
                     <th>Image</th>
                     <th>Créé le</th>
@@ -62,7 +67,14 @@
                         <tr>
                             <td><%= post.title %></td>
                             <td><%= post.author %></td>
-                            <td><%= post.content %></td>
+                            <td>
+                                <% if (post.tags && post.tags.length > 0) { %>
+                                    <%= post.tags.join(', ') %>
+                                <% } else { %>
+                                    -
+                                <% } %>
+                            </td>
+                            <td><%- post.content.replace(/\n/g, '<br>') %></td>
                             <td>
                                 <% if (post.pictureLink) { %>
                                     <a href="<%= post.pictureLink %>" target="_blank">View</a>
@@ -78,7 +90,7 @@
                     <% }); %>
                 <% } else { %>
                     <tr>
-                        <td colspan="6">Aucun post disponible.</td>
+                        <td colspan="7">Aucun post disponible.</td>
                     </tr>
                 <% } %>
             </tbody>

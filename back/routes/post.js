@@ -6,17 +6,22 @@ const router = express.Router();
 // Create a new blog post
 router.post('/', async (req, res) => {
     try {
-        const { title, content, author, picture_link, created_at } = req.body;
+        const { title, content, author, picture_link, created_at, tags } = req.body;
         if (!title || !content) {
             return res.status(400).json({ error: 'Title and content are required.' });
         }
+        // Parse tags: split by comma, trim whitespace, filter out empty strings
+        const tagsArray = tags
+            ? tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+            : [];
         console.log('Creating post with data:', req.body);
         const post = new Post({
             title,
             content,
             author: author || 'Anonymous',
             pictureLink: picture_link || '',
-            createdAt: created_at ? new Date(created_at) : new Date()
+            createdAt: created_at ? new Date(created_at) : new Date(),
+            tags: tagsArray
         });
         await post.save();
         res.redirect('/post-page');
@@ -29,7 +34,6 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find({});
-        console.log('Fetched posts:', posts);
         res.json(posts);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch posts.' });
