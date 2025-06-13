@@ -20,14 +20,14 @@ export default function Consommation() {
             if (!token) return;
 
             try {
-                const profileRes = await fetch(`${process.env.BACKEND_URL}/api/auth/profile`, {
+                const profileRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
 
                 if (!profileRes.ok) {
-                    const newRes = await fetch(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
+                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
                         headers: {
                             Authorization: `Bearer ${tokenRefresh }`,
                         },
@@ -50,14 +50,14 @@ export default function Consommation() {
                     return;
                 }
 
-                const statsRes = await fetch(`${process.env.BACKEND_URL}/api/stats/user?signupDate=${signupData}`, {
+                const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user?signupDate=${signupData}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
 
                 if (!statsRes.ok) {
-                    const newRes = await fetch(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
+                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
                         headers: {
                             Authorization: `Bearer ${tokenRefresh }`,
                         },
@@ -76,7 +76,7 @@ export default function Consommation() {
                 if (statsRes.ok) {
                     const total_consumed = [data.currentConsumption, data.dailyConsumption, data.monthlyConsumption, data.lastDayConsumption];
 
-                    const saveRes = await fetch(`${process.env.BACKEND_URL}/api/stats/update`, {
+                    const saveRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/update`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export default function Consommation() {
                     const statData = await saveRes.json();
                     if (!saveRes.ok) {
                     console.error('Erreur lors de la mise à jour des statistiques :', statData.message);
-                    const newRes = await fetch(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
+                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
                         headers: {
                             Authorization: `Bearer ${tokenRefresh }`,
                         },

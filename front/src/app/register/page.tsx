@@ -24,11 +24,8 @@ export default function Register() {
             alert('Les mots de passe ne correspondent pas.');
             return;
         }
-        const url = process.env.BACKEND_URL;
-        console.log(process.env.BACKEND_URL);
-        console.log(url);
         // Here you would typically send a request to your backend to register the user
-        const res = await fetch(`${process.env.BACKEND_URL}/api/auth/register`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +36,7 @@ export default function Register() {
         const data = await res.json();
 
         if (res.ok) {
-            const statRes = await fetch(`${process.env.BACKEND_URL}/api/stats/add`, {
+            const statRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
