@@ -1,0 +1,69 @@
+.containerMajor{
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  border: 1px solid #374151;
+  border-radius: 0.75em;
+  margin: 1em;
+  width: 90%;
+  height: 100%;
+}
+
+.barContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  margin: 1em;
+  width: 90%;
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* facultatif : pour aligner verticalement */
+  width: 100%; /* ou autre largeur selon votre mise en page */
+}
+
+.containerMinor {
+    display: flex;
+    flex-direction: row;
+    background-color: #3d542e;
+    border: 1px solid #374151;
+    color: #bdff5f;
+    border-radius: 0.45em;
+    margin: 0.5em;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.value {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25em;
+    margin: 0.5em;
+    margin-left:auto;
+}
+
+.type {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.45em;
+    margin: 0.5em;
+}
+
+.title{
+  font-size: 1rem;
+  font-weight: bold;
+  color: #E8E8E8;
+  margin-left : 1rem;
+  margin-top: 1em;
+}
