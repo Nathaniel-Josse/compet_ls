@@ -170,4 +170,52 @@ router.put('/update', async (req, res) => {
     }
 });
 
+router.put('/updateall', async (req, res) => {
+    const now = new Date();
+    const depuisMinuit = now.getHours() + now.getMinutes() / 60;
+    const nowDay = now.getDate();
+    const nowHour = now.getHours();
+    const nowMonth = now.getMonth();
+
+    try {
+        const allStats = await Stat.find();
+
+        const min = limits[stats[0].heating_system][stats[0].surface][stats[0].person][0] || 0;
+        const max = limits[stats[0].heating_system][stats[0].surface][stats[0].person][1] || 0;
+
+        const energie = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        for(const stats in allStats) {
+            const pastLast = stats[0].total_consumed[2].length - 1
+            const yearlyLast = stats[0].total_consumed[3].length - 1
+            const updateDate = stats[0].updated_at.getDate();
+            const updateHour = stats[0].updated_at.getHours();
+            const updateMonth = stats[0].update_at.getMonth();
+            if (updateDate !== nowDay) {
+                if (updateMonth !== nowMonth) {
+                    stats[0].total_consumed[3].push(stats[0].total_consumed[1]);
+                } else {
+                    stats[0].total_consumed[3][yearlyLast] = stats[0].total_consumed[3][yearlyLast] + stats[0].total_consumed[1];
+                }
+                stats[0].total_consumed[2].push(stats[0].total_consumed[1]);
+                stats[0].total_consumed[0] = energie;
+                stats[0].total_consumed[1] = 0.00 + currentConsumption //Need to finish later
+
+            } else if (updateHour !== nowHour && updateDate === nowDay) {
+                stats[0].total_consumed[0] = energie;
+                stats[0].total_consumed[1] = dailyConsumption + stats[0].total_consumed[0]
+                stats[0].total_consumed[2][pastLast] = stats[0].total_consumed[2][pastLast] + stats[0].total_consumed[0]
+                stats[0].total_consumed[3][yearlyLast] = stats[0].total_consumed[3][yearlyLast] + stats[0].total_consumed[0]
+            } else if (stats[0].updated_at === stats[0].created_at) {
+                currentConsumption = energie;
+                dailyConsumption = energie;
+                pastConsumption[0] = energie;
+                yearlyConsumption[0] = energie;
+            }
+        };
+    } catch(error) {
+        res.status(500).json({ message: 'Server Error'});
+    }
+});
+
 module.exports = router;
