@@ -16,7 +16,7 @@ router.post('/add', async (req, res) => {
 
     try {
         const set_limit = limits[heating_system][surface][person][1] || 0;
-        const stat = new User({
+        const stat = new Stat({
             user_id: user_id,
             person: person,
             surface : surface,

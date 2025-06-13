@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+require('dotenv').config();
 
+const mongoose = require('mongoose');
 const statSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -53,4 +54,4 @@ const statSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Stat', statSchema);
+module.exports = mongoose.model('Stat', statSchema, `${process.env.STATS}`);

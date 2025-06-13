@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const feedbackSchema = new mongoose.Schema({
     user_id: {
@@ -19,4 +21,4 @@ const feedbackSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Feedback', feedbackSchema);
+module.exports = mongoose.model('Feedback', feedbackSchema, `${process.env.FEEDBACK}`);
