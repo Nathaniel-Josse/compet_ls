@@ -66,10 +66,10 @@ router.post('/add', async (req, res) => {
                     for (const sub of subscriptions) {
                         await sendPushNotification(sub, payload);
                         }
-                    } else {
+                    }  else {
                         console.error('Erreur notification:');
                     }
-            };
+            }
 
             res.status(200).json({stats,
                 currentConsumption: currentConsumption.toFixed(2),

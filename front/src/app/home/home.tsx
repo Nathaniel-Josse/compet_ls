@@ -8,7 +8,7 @@ import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 import Profil from "@/components/profil/profil";
 import Graph_bar from "@/components/graph_bar/graph_bar";
 
-type ViewType = "accueil" | "appareils" | "stats" | "profil" | "autres";
+type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog";
 export default function Home() {
     const [currentView, setCurrentView] = useState<ViewType>("accueil");
 
@@ -41,17 +41,17 @@ export default function Home() {
                 return (
                     <div>
                         <h1 className={styles.welcome}>Statistiques</h1>
+                        <Graph_bar />
                     <Consommation />
                     <Efficacite />
-                    <Graph_bar />
                     <div className={styles.text}>PLACEHOLDER...</div></div>
                 );
             case "profil":
                 return <div>
                     <Profil />
                     </div>;
-            case "autres":
-                return <div>Autres</div>;
+            case "blog":
+                return <div>Articles</div>;
             default:
                 return (
                     <div>
@@ -59,7 +59,7 @@ export default function Home() {
                             
                         </div>
                         <div>
-                            {/* Add later the other components */}  
+                            {/* Add later the other components */}
                             <Graph_bar />
                             <Consommation />
                             <Appareils />
@@ -75,12 +75,12 @@ return (
         <div>
             <header className={styles.header}>
                 <div className={styles.logoContainer}>
-                <h2 className={styles.text}>Bonjour.</h2>
+                <h2 className={styles.text}>Bonjour,</h2>
                 <h1 className={styles.welcome}>PLACEHOLDER</h1>
                 </div>
-                <button className={styles.iconContainer} onClick={() => changeView("autres")}>
+                <button className={styles.iconContainer}>
                     <Image
-                    src="/images/settings.svg"
+                    src="/images/settings.svg"//
                     alt="Paramètres"
                     fill
                     sizes="(max-width: 600px) 24px, 6vw"
@@ -88,24 +88,42 @@ return (
                     />
                 </button>
             </header>
-            <main>
+            <main className={styles.main}>
                 <div>{renderContent()}</div>
             </main>
             <footer className={styles.footer}>
-                <button className={getButtonClass("accueil")} onClick={() => changeView("accueil")}>
-                    <div><Image src="/images/house.svg" alt="Home" width={16} height={16} color="#E8E8E8"/></div>
-                    <div>Accueil</div>
-                </button>
-                <button className={getButtonClass("appareils")} onClick={() => changeView("appareils")}>
-                    <div><Image src="/images/house.svg" alt="Appareil" width={16} height={16} color="#E8E8E8"/></div>
-                    <div>Appareil</div>
-                </button>
-                <button className={getButtonClass("stats")} onClick={() => changeView("stats")}>
-                    <Image src="/images/house.svg" alt="Stat" width={16} height={16} color="#E8E8E8"/> Statistique
-                </button>
-                <button className={getButtonClass("profil")} onClick={() => changeView("profil")}>
-                    <Image src="/images/user.svg" alt="Stat" width={16} height={16} color="#E8E8E8"/> Profil
-                </button>
+                    <button className={getButtonClass("accueil")} onClick={() => changeView("accueil")}>
+                        <div className={styles.iconWithText}>
+                            <Image src="/images/gauge.svg" alt="Home" width={16} height={16} color="#E8E8E8"/>
+                        {currentView === "accueil" && <div>Accueil</div>}
+                        </div> 
+                    </button>
+                    <button className={getButtonClass("appareils")} onClick={() => changeView("appareils")}>
+                        <div className={styles.iconWithText}>
+                            <Image src="/images/smartphone.svg" alt="Appareil" width={16} height={16} color="#E8E8E8"/>
+                        {currentView === "appareils" && <div>Appareils</div>}
+                        </div>
+                    </button>
+                    <button className={getButtonClass("stats")} onClick={() => changeView("stats")}>
+                        <div className={styles.iconWithText}>
+                            <Image src="/images/lightbulb.svg" alt="Stat" width={16} height={16} color="#E8E8E8"/>
+                            {currentView === "stats" && <div>Statistiques</div>}
+                        </div>
+                        
+                    </button>
+                    <button className={getButtonClass("blog")} onClick={() => changeView("blog")}>
+                        <div className={styles.iconWithText}>
+                            <Image src="/images/book.svg" alt="Blog" width={16} height={16} color="#E8E8E8"/>
+                            {currentView === "blog" && <div>Blog</div>}
+                        </div>
+                    
+                    </button>
+                    <button className={getButtonClass("profil")} onClick={() => changeView("profil")}>
+                        <div className={styles.iconWithText}>
+                            <Image src="/images/user.svg" alt="Profil" width={16} height={16} color="#E8E8E8"/>
+                            {currentView === "profil" && <div>Profil</div>}
+                        </div>
+                    </button>
             </footer>
         </div>
   );
