@@ -17,10 +17,12 @@ type StatsData = {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, Legend, Filler );
 
-type ViewType = "aujourd'hui" | "semaine" | "mois" | "année";
+type GraphType = "aujourd'hui" | "semaine" | "mois" | "année";
+type ViewType = "accueil" | "stats" | "autres";
 
 export default function Graph_bar() {
-    const [currentGraph, setCurrentGraph] = useState<ViewType>("aujourd'hui")
+    const [currentGraph, setCurrentGraph] = useState<GraphType>("aujourd'hui")
+    const [currentView, setCurrentView] = useState<ViewType>("accueil");
     const [data, setData] = useState<StatsData | null>(null);
 
     const date = new Date();
@@ -90,6 +92,13 @@ export default function Graph_bar() {
             }
         }
         fetchStats();
+
+        const view = localStorage.getItem('currentView');
+        if (view === "accueil" || view === "stats" || view === "autres") {
+            setCurrentView(view);
+        } else {
+            setCurrentView("accueil");
+        }
     }
     , []);
 
@@ -154,25 +163,63 @@ export default function Graph_bar() {
         }]
     };
 };
-
-    const chartData = getChartData();
-
-    return (
-        <div>
-            {date.toLocaleString()}
-            {data ? `${data.dailyConsumption}kWh` : 'Chargement...'}
-            <div className={styles.toggleButtons}>
+    const toggleButtonMenu = () => {
+        if(currentView === 'stats') {
+            return (<div className={styles.toggleButtons}>
                 {["aujourd'hui", "semaine", "mois", "année"].map((type) => (
                     <button
                         key={type}
-                        onClick={() => setCurrentGraph(type as ViewType)}
+                        onClick={() => setCurrentGraph(type as GraphType)}
                         className={currentGraph === type ? styles.activeButton : ""}
                     >
                         {type}
                     </button>
                 ))}
+            </div>)
+        } else {
+            return (
+                <div className={styles.toggleButtons}>
+                    <button
+                        onClick={() => setCurrentGraph("aujourd'hui")}
+                        className={styles.activeButton}
+                    >
+                        Aujourd hui
+                    </button>
+                
             </div>
+            )
+        }
+    }
 
+    
+
+    const chartData = getChartData();
+
+    return (
+        <div className={styles.container}>
+            <div className={styles.sujet}>
+                <div>
+                    <div>
+                        {date.toLocaleDateString("fr-FR", {weekday: "long",})},
+                    </div>
+                    <div className={styles.date}>
+                        {date.toLocaleDateString("fr-FR", {year: "numeric", month: "long", day: "numeric",})}
+                    </div>
+                </div>
+                <div>
+                    <div className={styles.consommation}>
+                        {data ? `${data.dailyConsumption}` : 'Chargement...'}
+                    </div>
+                    <div>
+                        kWh
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div>
+                {toggleButtonMenu()}
+            </div>
             {chartData ? (
                 <Bar
                     data={chartData}
@@ -180,7 +227,7 @@ export default function Graph_bar() {
                         responsive: true,
                         plugins: {
                             legend: { display: false },
-                            title: { display: true, text: `Vue: ${currentGraph}` }
+                            title: { display: true,}
                         },
                         scales: {
                             y: { beginAtZero: true }
