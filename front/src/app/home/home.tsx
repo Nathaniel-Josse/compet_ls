@@ -33,6 +33,7 @@ export default function Home() {
                     <div>
                         <h1 className={styles.welcome}>Statistiques</h1>
                         <Graph_bar />
+                        <Graph_bar />
                     <Consommation />
                     <Efficacite />
                     <div className={styles.text}>PLACEHOLDER...</div></div>
@@ -43,14 +44,14 @@ export default function Home() {
                     </div>;
             case "blog":
                 return <div>Articles</div>;
+            case "blog":
+                return <div>Articles</div>;
             default:
                 return (
                     <div>
                         <div>
-                            
-                        </div>
-                        <div>
                             {/* Add later the other components */}
+                            <Graph_bar />
                             <Graph_bar />
                             <Consommation />
                             <Appareils />

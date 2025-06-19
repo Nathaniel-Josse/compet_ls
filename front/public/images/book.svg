@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M18.5 16H3.5C2.94772 16 2.5 16.4477 2.5 17C2.5 17.5523 2.94772 18 3.5 18H18.5V20H3.5C1.84315 20 0.5 18.6569 0.5 17V2C0.5 0.89543 1.39543 0 2.5 0H18.5V16ZM2.5 14.05C2.66156 14.0172 2.82877 14 3 14H16.5V2H2.5V14.05ZM13.5 7H5.5V5H13.5V7Z" fill="#979797"/>
 </svg>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-icon lucide-book"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+>>>>>>> 03a1862 (Finalizing graph_bar | updating navbar | updating css on most components)
