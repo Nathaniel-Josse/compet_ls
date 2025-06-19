@@ -20,9 +20,9 @@ const statSchema = new mongoose.Schema({
         required: true,
     },
     total_consumed: {
-        type: [Number],
+        type: [mongoose.Schema.Types.Mixed],
         required: false,
-        default: [0.00, 0.00, 0.00, 0.00]
+        default: [0.00, [0.00], [0.00], [0.00]]
     },
     limit: {
         type: Number,

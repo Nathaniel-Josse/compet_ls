@@ -21,7 +21,7 @@ router.post('/add', async (req, res) => {
             person: person,
             surface : surface,
             heating_system: heating_system,
-            total_consumed: [0.00, 0.00, 0.00, 0.00],
+            total_consumed: [0.00, [0.00], [0.00], [0.00]],
             limit: set_limit,
             limit_set_notif: false,
             co2_saved: 0,
@@ -36,7 +36,6 @@ router.post('/add', async (req, res) => {
 });
 
     router.get('/user', async (req, res) => {
-        const signupDate = new Date(req.query.signupDate);
         const token = req.headers.authorization?.split(' ')[1];
 
         if (!token) {
@@ -45,71 +44,19 @@ router.post('/add', async (req, res) => {
 
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const stats = await Stat.find({ user_id: decoded.userId });
-            if (stats.length === 0) {
+            const stats = await Stat.findOne({ user_id: decoded.userId });
+            if (!stats) {
                 return res.status(404).json({ message: 'Aucune statistique trouvée pour cet utilisateur' });
             }
+            const pastLast = stats.total_consumed[2].length - 1
+            const yearlyLast = stats.total_consumed[3].length - 1
 
-            const min = limits[stats[0].heating_system][stats[0].surface][stats[0].person][0] || 0;
-            const max = limits[stats[0].heating_system][stats[0].surface][stats[0].person][1] || 0;
+            const currentConsumption = stats.total_consumed[0];
+            const dailyConsumption = stats.total_consumed[1].reduce((a, b) => a+b, 0);
+            const monthlyConsumption = stats.total_consumed[2][pastLast];
+            const lastDayConsumption = stats.total_consumed[3][yearlyLast];
 
-            const energie = Math.floor(Math.random() * (max - min + 1)) + min;
-
-            let currentConsumption = 0.00;
-            let dailyConsumption = 0.00;
-            let monthlyConsumption = 0.00;
-            let lastDayConsumption = 0.00;
-
-            const now = new Date();
-            const depuisMinuit = now.getHours() + now.getMinutes() / 60;
-            const nowDay = now.getDate();
-            const signupDay = signupDate.getDate();
-            const nowHour = now.getHours();
-            const signupHour = signupDate.getHours();
-            if (nowDay !== signupDay) {
-
-            }
-            if(stats[0].total_consumed[0] === 0.00) {
-                currentConsumption = (energie / 24)*1000;
-                dailyConsumption = (currentConsumption/1000) * depuisMinuit;
-
-                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-                const isSignupThisMonth = signupDate > startOfMonth;
-                const daysPassed = isSignupThisMonth
-                ? Math.floor((now - signupDate) / (1000 * 60 * 60 * 24))
-                : new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-                if (nowDay !== signupDay) {
-                    monthlyConsumption = (daysPassed * energie) + dailyConsumption;
-                } else if (nowHour !== signupHour) {
-                    monthlyConsumption = (daysPassed * energie) + currentConsumption/100;
-                } else {
-                    monthlyConsumption = energie;
-                }
-            } else {
-                let depuisUpdate = 0;
-                const updateDate = stats[0].updated_at.getDate();
-                const updateHour = stats[0].updated_at.getHours();
-                if (nowDay !== updateDate) {
-                    currentConsumption = 0.00 + (energie / 24)*1000;
-                    lastDayConsumption = stats[0].total_consumed[1]
-                    dailyConsumption = 0.00 + (currentConsumption/1000) * depuisMinuit;
-                    monthlyConsumption = stats[0].total_consumed[2] + dailyConsumption;
-                    ;
-                } else if (nowHour !== updateHour) {
-                    depuisUpdate = nowHour - updateHour;
-                    currentConsumption = stats[0].total_consumed[0] + (energie / 24)*1000;
-                    dailyConsumption = stats[0].total_consumed[1] + (currentConsumption/1000) * depuisUpdate;
-                    monthlyConsumption = stats[0].total_consumed[2] + currentConsumption/1000;
-                    lastDayConsumption = stats[0].total_consumed[3];
-                } else {
-                    currentConsumption = stats[0].total_consumed[0];
-                    dailyConsumption = stats[0].total_consumed[1];
-                    monthlyConsumption = stats[0].total_consumed[2];
-                    lastDayConsumption = stats[0].total_consumed[3];
-                }
-            }
-
-            if (stats[0].limit_set_notif === true) {
+            if (stats.limit_set_notif === true) {
                 const payload = {
                     title: 'Alerte consommation',
                     body: `PLACEHOLDER.`,
@@ -121,7 +68,7 @@ router.post('/add', async (req, res) => {
                         }
                     }
             } else {
-                console.error('Erreur notification:', err);
+                console.error('Erreur notification:');
             }
 
             res.status(200).json({stats,
@@ -131,7 +78,7 @@ router.post('/add', async (req, res) => {
                 lastDayConsumption: lastDayConsumption.toFixed(2),}
             );
         } catch (error) {
-            res.status(500).json({ message: 'Erreur du serveur' });
+            res.status(500).json({ message: 'Erreur du serveur', error });
         }
     });
 
@@ -145,74 +92,77 @@ router.put('/update', async (req, res) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const stat = await Stat.find({ user_id: decoded.userId });
+        const stat = await Stat.findOne({ user_id: decoded.userId });
         if (stat.length === 0) {
                 return res.status(404).json({ message: 'Aucune statistique trouvée pour cet utilisateur' });
         }
-        if (person !== undefined) stat[0].person = person;
-        if (surface !== undefined) stat[0].surface = surface;
-        if (heating_system !== undefined) stat[0].heating_system = heating_system;
+        if (person !== undefined) stat.person = person;
+        if (surface !== undefined) stat.surface = surface;
+        if (heating_system !== undefined) stat.heating_system = heating_system;
         if (person !== undefined || surface !== undefined || heating_system !== undefined) {
-            const set_limit = limits[stat[0].heating_system][stat[0].surface][stat[0].person][1] || 0;
+            const set_limit = limits[stat.heating_system][stat.surface][stat.person] || 0;
             stat.limit = set_limit;
         }
-        if (total_consumed !== undefined) stat[0].total_consumed = total_consumed;
-        if (stat[0].total_consumed[3] < stat[0].limit) stat[0].limit_set_notif = true;
-        if (co2_saved !== undefined) stat[0].co2_saved = co2_saved;
-        if (money_saved !== undefined) stat[0].money_saved = money_saved;
+        if (total_consumed !== undefined) stat.total_consumed = total_consumed;
+        if (co2_saved !== undefined) stat.co2_saved = co2_saved;
+        if (money_saved !== undefined) stat.money_saved = money_saved;
         stat[0].updated_at = new Date();
 
         await stat[0].save();
         res.status(200).json({ message: 'Statistique mise à jour avec succès', stat });
     } catch (error) {
-        console.error('Error updating stats:', error);
         res.status(500).json({ message: 'Erreur du serveur' });
     }
 });
 
 router.put('/updateall', async (req, res) => {
-    const now = new Date();
-    const depuisMinuit = now.getHours() + now.getMinutes() / 60;
-    const nowDay = now.getDate();
-    const nowHour = now.getHours();
-    const nowMonth = now.getMonth();
+    let now = new Date();
+    let nowDay = now.getDate();
+    let nowHour = now.getHours();
+    let nowMonth = now.getMonth();
 
     try {
         const allStats = await Stat.find();
 
-        const min = limits[stats[0].heating_system][stats[0].surface][stats[0].person][0] || 0;
-        const max = limits[stats[0].heating_system][stats[0].surface][stats[0].person][1] || 0;
+        for(const stats of allStats) {
+            let min = limits[stats.heating_system][stats.surface][stats.person][0] || 0;
+            let max = limits[stats.heating_system][stats.surface][stats.person][1] || 0;
 
-        const energie = Math.floor(Math.random() * (max - min + 1)) + min;
+            let energie = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        for(const stats in allStats) {
-            const pastLast = stats[0].total_consumed[2].length - 1
-            const yearlyLast = stats[0].total_consumed[3].length - 1
-            const updateDate = stats[0].updated_at.getDate();
-            const updateHour = stats[0].updated_at.getHours();
-            const updateMonth = stats[0].update_at.getMonth();
+            let pastLast = stats.total_consumed[2].length - 1
+            let yearlyLast = stats.total_consumed[3].length - 1
+            let dayLast = stats.total_consumed[1].length - 1
+            let updateDate = stats.updated_at.getDate();
+            let updateHour = stats.updated_at.getHours();
+            let updateMonth = stats.updated_at.getMonth();
+
             if (updateDate !== nowDay) {
                 if (updateMonth !== nowMonth) {
-                    stats[0].total_consumed[3].push(stats[0].total_consumed[1]);
+                    stats.total_consumed[3].push(Math.round((stats.total_consumed[1]))* 100) / 100;
                 } else {
-                    stats[0].total_consumed[3][yearlyLast] = stats[0].total_consumed[3][yearlyLast] + stats[0].total_consumed[1];
+                    stats.total_consumed[3][yearlyLast] = Math.round((stats.total_consumed[3][yearlyLast] + stats.total_consumed[1])* 100) / 100;
                 }
-                stats[0].total_consumed[2].push(stats[0].total_consumed[1]);
-                stats[0].total_consumed[0] = energie;
-                stats[0].total_consumed[1] = 0.00 + currentConsumption //Need to finish later
+                stats.total_consumed[2].push(Math.round(stats.total_consumed[1][dayLast]* 100) / 100);
+                stats.total_consumed[2][pastLast] > stats.total_consumed[1] && stats.limit_set_notif === true ? stats.limit_set_notif = true : stats.limit_set_notif = false;
+                stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;
+                stats.total_consumed[1] = [Math.round((0.00 + stats.total_consumed[0])* 100) / 100] //Need to finish later
 
             } else if (updateHour !== nowHour && updateDate === nowDay) {
-                stats[0].total_consumed[0] = energie;
-                stats[0].total_consumed[1] = dailyConsumption + stats[0].total_consumed[0]
-                stats[0].total_consumed[2][pastLast] = stats[0].total_consumed[2][pastLast] + stats[0].total_consumed[0]
-                stats[0].total_consumed[3][yearlyLast] = stats[0].total_consumed[3][yearlyLast] + stats[0].total_consumed[0]
-            } else if (stats[0].updated_at === stats[0].created_at) {
-                currentConsumption = energie;
-                dailyConsumption = energie;
-                pastConsumption[0] = energie;
-                yearlyConsumption[0] = energie;
+                stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;
+                stats.total_consumed[1].push(Math.round(((stats.total_consumed[1][dayLast] + stats.total_consumed[0]/1000))* 100) / 100)
+                console.log(stats.total_consumed[1][dayLast] + stats.total_consumed[0])
+                stats.total_consumed[3][yearlyLast] = Math.round((stats.total_consumed[3][yearlyLast] + stats.total_consumed[0]/1000)* 100) / 100;
+            } else if (stats.updated_at === stats.created_at) {
+                stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;
+                stats.total_consumed[1][0] = Math.round((energie/24)* 100) / 100;
+                stats.total_consumed[3][0] = Math.round((energie/24)* 100) / 100;
             }
+            stats.updated_at = now;
+            stats.markModified('total_consumed');
+            await stats.save()
         };
+        res.status(200).json({ message: 'Statistiques mise à jour avec succès' });
     } catch(error) {
         res.status(500).json({ message: 'Server Error'});
     }

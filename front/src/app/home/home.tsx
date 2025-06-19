@@ -6,6 +6,7 @@ import {useEffect, useState } from "react";
 import classNames from "classnames";
 import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 import Profil from "@/components/profil/profil";
+import Graph_bar from "@/components/graph_bar/graph_bar";
 
 type ViewType = "accueil" | "appareils" | "stats" | "profil" | "autres";
 export default function Home() {
@@ -42,6 +43,7 @@ export default function Home() {
                         <h1 className={styles.welcome}>Statistiques</h1>
                     <Consommation />
                     <Efficacite />
+                    <Graph_bar />
                     <div className={styles.text}>PLACEHOLDER...</div></div>
                 );
             case "profil":
