@@ -2,16 +2,23 @@
 import Image from 'next/image';
 import styles from './consommation.module.css';
 import { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation"
 
 type StatsData = {
     currentConsumption: number;
     dailyConsumption: number;
     monthlyConsumption: number;
-    // add other properties if needed
 };
 
 export default function Consommation() {
     const [data, setData] = useState<StatsData | null>(null);
+
+    const router = useRouter();
+
+    const logoff = () => {
+        localStorage.removeItem("token");
+        router.push("/login");
+    };
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -34,6 +41,7 @@ export default function Consommation() {
                     });
                     if (!newRes.ok) {
                         throw new Error("Failed to fetch user profile");
+                        logoff();
                     }
 
                     const newData = await newRes.json();

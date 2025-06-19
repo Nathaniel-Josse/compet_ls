@@ -143,7 +143,7 @@ router.put('/updateall', async (req, res) => {
                 } else {
                     stats.total_consumed[3][yearlyLast] = Math.round((stats.total_consumed[3][yearlyLast] + stats.total_consumed[1])* 100) / 100;
                 }
-                stats.total_consumed[2].push(Math.round(stats.total_consumed[1][dayLast]* 100) / 100);
+                stats.total_consumed[2].push(Math.round(stats.total_consumed[1].reduce((a, b) => a+b, 0) * 100) / 100);
                 stats.total_consumed[2][pastLast] > stats.total_consumed[1] && stats.limit_set_notif === true ? stats.limit_set_notif = true : stats.limit_set_notif = false;
                 stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;
                 stats.total_consumed[1] = [Math.round((0.00 + stats.total_consumed[0])* 100) / 100] //Need to finish later
@@ -151,7 +151,6 @@ router.put('/updateall', async (req, res) => {
             } else if (updateHour !== nowHour && updateDate === nowDay) {
                 stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;
                 stats.total_consumed[1].push(Math.round(((stats.total_consumed[1][dayLast] + stats.total_consumed[0]/1000))* 100) / 100)
-                console.log(stats.total_consumed[1][dayLast] + stats.total_consumed[0])
                 stats.total_consumed[3][yearlyLast] = Math.round((stats.total_consumed[3][yearlyLast] + stats.total_consumed[0]/1000)* 100) / 100;
             } else if (stats.updated_at === stats.created_at) {
                 stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;

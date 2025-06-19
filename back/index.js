@@ -55,7 +55,7 @@ app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
-cron.schedule('*/1 * * * *', async () => {
+cron.schedule('0 * * * *', async () => {
     try {
         console.log('Cron job: mise à jour des statistiques...');
         await axios.put(`http://localhost:${port}/api/stats/updateall`);

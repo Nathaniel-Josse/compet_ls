@@ -22,7 +22,7 @@ const statSchema = new mongoose.Schema({
     total_consumed: {
         type: [mongoose.Schema.Types.Mixed],
         required: false,
-        default: [0.00, [0.00], [0.00], [0.00]]
+        default: [0.00, [0.00], [0.00], [0.00]] //[Consommation de l'heure, [Consommation journalière séquencé par heure], [Consommation des jours précédents séquencé par jour], [Consommation des mois dernier séquencer par mois]]
     },
     limit: {
         type: Number,

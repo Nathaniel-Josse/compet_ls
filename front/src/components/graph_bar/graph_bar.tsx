@@ -106,13 +106,13 @@ export default function Graph_bar() {
             selectedData = data.stats.total_consumed[1];
             labels = selectedData.map((_, idx) => {
                 const date = new Date(updatedAt);
-                date.setHours(updatedAt.getHours() - idx)
-                return `${date.toLocaleDateString(undefined)}h`;
+                date.setHours((updatedAt.getHours() - (selectedData.length - 1 - idx)))
+                return `${date.toLocaleTimeString(undefined, { hour: '2-digit', hour12: false })}`;
             });
             break;
 
         case "semaine":
-            selectedData = data.stats.total_consumed[2].slice(-7);
+            selectedData = data.stats.total_consumed[2].slice(-7).concat(data.stats.total_consumed[1].reduce((a, b) => a + b, 0));
             labels = selectedData.map((_, idx) => {
                 const date = new Date(updatedAt);
                 date.setDate(updatedAt.getDate() - (6 - idx));
@@ -121,14 +121,10 @@ export default function Graph_bar() {
             break;
 
         case "mois":
-            selectedData = data.stats.total_consumed[2];
+            selectedData = data.stats.total_consumed[2].concat(data.stats.total_consumed[1].reduce((a, b) => a + b, 0));
             const totalDays = selectedData.length;
             labels = selectedData.map((_, idx) => {
                 const date = new Date(updatedAt);
-                console.log(totalDays)
-                console.log(totalDays - 1 )
-                console.log(totalDays - 1 - idx)
-                console.log(updatedAt.getDate() - (totalDays - 1 - idx))
                 date.setDate(updatedAt.getDate() - (totalDays - 1 - idx));
                 return date.getDate().toString(); // juste le jour du mois
             });
@@ -170,7 +166,7 @@ export default function Graph_bar() {
                     <button
                         key={type}
                         onClick={() => setCurrentGraph(type as ViewType)}
-                        className={currentGraph === type ? styles.active : ""}
+                        className={currentGraph === type ? styles.activeButton : ""}
                     >
                         {type}
                     </button>
