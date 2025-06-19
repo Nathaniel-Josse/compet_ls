@@ -52,13 +52,13 @@ app.get('/post-page', async (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on ${process.env.PUBLIC_BACKEND_PATH}`);
 });
 
 cron.schedule('0 * * * *', async () => {
     try {
         console.log('Cron job: mise à jour des statistiques...');
-        await axios.put(`http://localhost:${port}/api/stats/updateall`);
+        await axios.put(`${process.env.PUBLIC_BACKEND_PATH}/api/stats/updateall`);
         console.log('Mise à jour terminée.');
     } catch (error) {
         console.error('Erreur lors de la mise à jour automatique :', error.message);

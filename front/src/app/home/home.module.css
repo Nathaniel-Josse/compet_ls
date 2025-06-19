@@ -26,7 +26,6 @@
   position: relative;
   width: 30vw;        /* responsive largeur */
   aspect-ratio: 5 / 1; /* garde un ratio horizontal propre */
-  max-width: 160px;
   height: auto;       /* pas besoin si aspect-ratio est là */
 }
 

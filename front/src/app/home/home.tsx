@@ -56,11 +56,11 @@ export default function Home() {
                 return (
                     <div>
                         <div>
-                            <h1 className={styles.welcome}>Bonjour,  !</h1>
-                            <h2 className={styles.text}>Voici un aperçu de votre consommation énergétique.</h2>
+                            
                         </div>
                         <div>
-                            {/* Add later the other components */}
+                            {/* Add later the other components */}  
+                            <Graph_bar />
                             <Consommation />
                             <Appareils />
                             <Efficacite />
@@ -74,24 +74,9 @@ export default function Home() {
 return (
         <div>
             <header className={styles.header}>
-                <button className={styles.iconContainer} onClick={() => changeView("profil")}>
-                    <Image
-                    src="/images/user.svg"
-                    alt="Profil"
-                    fill
-                    sizes="(max-width: 600px) 24px, 6vw"
-                    style={{ objectFit: "contain" }}
-                    />
-                </button>
                 <div className={styles.logoContainer}>
-                <Image
-                src="/images/logo_lumea_rect_transp.png"
-                alt="Logo"
-                width={0}
-                height={0}
-                sizes="30vw"
-                style={{ width: '30vw', height: 'auto' }}
-                />
+                <h2 className={styles.text}>Bonjour.</h2>
+                <h1 className={styles.welcome}>PLACEHOLDER</h1>
                 </div>
                 <button className={styles.iconContainer} onClick={() => changeView("autres")}>
                     <Image
@@ -117,6 +102,9 @@ return (
                 </button>
                 <button className={getButtonClass("stats")} onClick={() => changeView("stats")}>
                     <Image src="/images/house.svg" alt="Stat" width={16} height={16} color="#E8E8E8"/> Statistique
+                </button>
+                <button className={getButtonClass("profil")} onClick={() => changeView("profil")}>
+                    <Image src="/images/user.svg" alt="Stat" width={16} height={16} color="#E8E8E8"/> Profil
                 </button>
             </footer>
         </div>
