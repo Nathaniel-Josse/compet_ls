@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Lumea",
-  description: "(Description de l'application)",
+  description: "Maîtriser sa consommation, même sans maîtriser le numérique.",
 };
 
 export default function RootLayout({
