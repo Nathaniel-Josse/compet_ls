@@ -66,9 +66,9 @@ router.post('/add', async (req, res) => {
                     for (const sub of subscriptions) {
                         await sendPushNotification(sub, payload);
                         }
+                    }  else {
+                        console.error('Erreur notification:');
                     }
-            } else {
-                console.error('Erreur notification:');
             }
 
             res.status(200).json({stats,
