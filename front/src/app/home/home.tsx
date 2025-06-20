@@ -27,6 +27,7 @@ export default function Home({currentView}: HomeProps) {
                     <div>
                         <h1 className={styles.welcome}>Statistiques</h1>
                         <Graph_bar />
+                        <Graph_bar />
                     <Consommation />
                     <Efficacite />
                     <div className={styles.text}>PLACEHOLDER...</div></div>
@@ -44,6 +45,7 @@ export default function Home({currentView}: HomeProps) {
                     <div>
                         <div>
                             {/* Add later the other components */}
+                            {/* Add later the other components */}
                             <Graph_bar />
                             <Consommation />
                             <Appareils />
@@ -60,10 +62,13 @@ return (
             <header className={styles.header}>
                 <div className={styles.logoContainer}>
                 <h2 className={styles.text}>Bonjour,</h2>
+                <h2 className={styles.text}>Bonjour,</h2>
                 <h1 className={styles.welcome}>PLACEHOLDER</h1>
                 </div>
                 <button className={styles.iconContainer}>
+                <button className={styles.iconContainer}>
                     <Image
+                    src="/images/settings.svg"//
                     src="/images/settings.svg"//
                     alt="Paramètres"
                     fill
@@ -72,6 +77,7 @@ return (
                     />
                 </button>
             </header>
+            <main className={styles.main}>
             <main className={styles.main}>
                 <div>{renderContent()}</div>
             </main>

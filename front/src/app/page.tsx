@@ -8,9 +8,16 @@ import Navbar from "@/components/navbar/navbar";
 import styles from "@/components/navbar/navbar.module.css";
 
 type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
+import classNames from "classnames";
+import Navbar from "@/components/navbar/navbar";
+import styles from "@/components/navbar/navbar.module.css";
+
+type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
 
 export default function Index() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [currentView, setCurrentView] = useState<ViewType>("accueil");
+  
   const [currentView, setCurrentView] = useState<ViewType>("accueil");
   
 
