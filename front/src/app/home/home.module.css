@@ -48,66 +48,8 @@
 }
 
 .main {
-<<<<<<< HEAD
-=======
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 1rem;
-  width: 100%;
-
+  width: 100vw;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
-
-.footer {
->>>>>>> 03a1862 (Finalizing graph_bar | updating navbar | updating css on most components)
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 1rem;
-  width: 100%;
-}
-
-<<<<<<< HEAD
-.navbar{
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 60px; 
-  display: flex;
-  z-index: 100;
-  align-items: center;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
-=======
-.footerButton {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: #E8E8E8;
-  font-size: 0.9rem;
->>>>>>> 03a1862 (Finalizing graph_bar | updating navbar | updating css on most components)
-}
-
-
-.activeButton {
-  background-color: #064ab5; /* Bleu */
-  color: #FFFFFF;
-  border-radius: 0.75em;
-<<<<<<< HEAD
-  width: auto;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-=======
-  width: 10%;
-}
-
-.iconWithText {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem; /* espace entre l'icône et le texte */
-}
->>>>>>> 03a1862 (Finalizing graph_bar | updating navbar | updating css on most components)

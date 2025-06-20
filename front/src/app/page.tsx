@@ -24,7 +24,7 @@ export default function Index() {
         router.push('/login');
         return;
       }
-      localStorage.removeItem("currentView");
+      // localStorage.removeItem("currentView");
         const savedView = localStorage.getItem("currentView") as ViewType | null;
         if (savedView) setCurrentView(savedView);
       setIsAuthenticated(true);
@@ -50,7 +50,7 @@ export default function Index() {
 
   return isAuthenticated ? 
   <div>
-     <Home />
+     <Home currentView={currentView}/>
             <nav className={styles.navbar}>
                 <Navbar getButtonClass={getButtonClass} changeView={changeView} currentView={currentView}/>
             </nav>

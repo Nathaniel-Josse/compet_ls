@@ -55,25 +55,56 @@ export default function Appareils() {
     };
 
     return (
-        <div className={styles.containerMajor}>
+        <div className={styles.container}>
             {currentView === 'appareils' && (
-                <div className={styles.counters}>
-                    <div>Total : {total}</div>
-                    <div>Total : {allumes}</div>
-                    <div>Total : {eteints}</div>
-                </div>
-                
+                <>
+                    <div className={styles.headerRow}>
+                        <div>
+                            <h1>Gestion des appareils</h1>
+                            <h2>Gérez vos appareils et leur conso</h2>
+                        </div>
+                        <button className={styles.addButton}>+ Appareil</button>
+                     </div>
+                     <div className={styles.blocksRow}>
+                            <div className={styles.infoBlock}>
+                                <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
+                                {total} Appareils
+                            </div>
+                            <div className={styles.infoBlock}>
+                                <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
+                                {allumes} Appareils
+                            </div>
+                            <div className={styles.infoBlock}>
+                                <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
+                                {eteints} Appareils
+                            </div>
+                    </div>
+                </>
             )}
-            {appareilsToShow.map(({ id, name, value, isOn }) => (
-                <div key={id} className={styles.containerMinor}>
-                    <div> <Image src={`/images/appareils/${name}.png`} alt='Default' width={16} height={16}/> </div>
-                    <div> {value} </div>
-                    <div> {name} </div>
-                    <div>
-                        <input type="checkbox" checked={isOn} onChange={() => toggleAppareil(id)}/>
+            <div className={styles.blocksGrid}>
+                {appareilsToShow.map(({ id, name, value, brand, isOn }) => (
+                <div key={id} className={styles.block}>
+                    <div className={styles.topRow}> 
+                        <Image src={`/images/appareils/${name}.png`} alt='Default' width={16} height={16}/>
+                        <span className={styles.value}> {value} </span>
+                     </div>
+                    <div className={styles.middleRow}>
+                        <div className="flex flex-col gap-1">
+                            <span> {name} </span>
+                            <span> {brand} </span>
+                        </div>
+                        <div className={styles.sliderWrapper}>
+                            <label className={styles.switch}>
+                                <input type="checkbox" checked={isOn} onChange={() => toggleAppareil(id)}/>
+                                <span className={styles.slider} >
+                                    <span className={styles.powerIcon}><Image src='images/power.svg' alt='Default' width={16} height={16}  /></span>
+                                </span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             ))}
+            </div>
         </div>
     );
 }

@@ -2,37 +2,30 @@ import Image from "next/image";
 import styles from "./home.module.css";
 import Consommation from "@/components/consommation/consommation";
 import Appareils from "@/components/appareil/appareil";
-import {useEffect, useState } from "react";
+import {useEffect} from "react";
 import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 import Profil from "@/components/profil/profil";
 import Graph_bar from "@/components/graph_bar/graph_bar";
 
 type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
+type HomeProps = {
+    currentView: ViewType;
+}
 
-export default function Home() {
-    const [currentView, setCurrentView] = useState<ViewType>("accueil");
+export default function Home({currentView}: HomeProps) {
 
     useEffect(() => {
-        const view = localStorage.getItem('currentView');
-        if (view === "accueil" || view === "appareils" || view === "stats" || view ==="profil" || view ==="blog") {
-            setCurrentView(view);
-        } else {
-            setCurrentView("autre");
-        }
     }, []);
     const renderContent = () => {
         switch (currentView) {
             case "appareils":
                 return (
-                    <div>
                     <Appareils />
-                    <div className={styles.text}>PLACEHOLDER...</div></div>
                 );
             case "stats":
                 return (
                     <div>
                         <h1 className={styles.welcome}>Statistiques</h1>
-                        <Graph_bar />
                         <Graph_bar />
                     <Consommation />
                     <Efficacite />
@@ -51,7 +44,6 @@ export default function Home() {
                     <div>
                         <div>
                             {/* Add later the other components */}
-                            <Graph_bar />
                             <Graph_bar />
                             <Consommation />
                             <Appareils />
