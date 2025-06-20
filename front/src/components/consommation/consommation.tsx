@@ -26,38 +26,6 @@ export default function Consommation() {
             const tokenRefresh = localStorage.getItem('tokenRefresh');
             if (!token) return;
 
-            try {
-                const profileRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!profileRes.ok) {
-                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
-                        headers: {
-                            Authorization: `Bearer ${tokenRefresh }`,
-                        },
-                    });
-                    if (!newRes.ok) {
-                        throw new Error("Failed to fetch user profile");
-                        logoff();
-                    }
-
-                    const newData = await newRes.json();
-                    localStorage.setItem("token", newData.token);
-                     // Retry fetching user profile with new token
-                    return fetchStats();
-                }
-
-                const profileData = await profileRes.json();
-                const signupData = profileData?.user_date;
-
-                if (!signupData) {
-                    console.error("No signup data found in profile");
-                    return;
-                }
-
                 const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -71,6 +39,7 @@ export default function Consommation() {
                         },
                     });
                     if (!newRes.ok) {
+                        logoff();
                         throw new Error("Failed to fetch user stats");
                     }
 
@@ -81,9 +50,6 @@ export default function Consommation() {
                 console.log(statsRes);
                 const data = await statsRes.json();
                 setData(data);
-            } catch (error) {
-                console.error("Error fetching user profile:", error);
-            }
         }
         fetchStats();
     }

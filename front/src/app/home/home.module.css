@@ -53,40 +53,27 @@
   align-items: center;
   margin-left: 1rem;
   width: 100%;
-
 }
 
-.footer {
-  display: flex;
-  justify-content: space-evenly; /* séparation égale */
-  align-items: center;
-  position: fixed; /* pour que ça reste en bas */
+.navbar{
+  position: fixed;
   bottom: 0;
-  width: 100%;
-  padding: 0.75rem 0;
-  border-top: 1px solid #374151;
-  background-color: #1a1a1a; /* fond cohérent */
-  color: #E8E8E8;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 60px; 
+  display: flex;
+  z-index: 100;
+  align-items: center;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
 }
 
-.footerButton {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: #E8E8E8;
-  font-size: 0.9rem;
-}
 
 .activeButton {
   background-color: #064ab5; /* Bleu */
+  color: #FFFFFF;
   border-radius: 0.75em;
-  width: 10%;
-}
-
-.iconWithText {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem; /* espace entre l'icône et le texte */
+  width: auto;
+  padding-left: 1em;
+  padding-right: 1em;
 }

@@ -34,36 +34,6 @@ export default function Graph_bar() {
             if (!token) return;
 
             try {
-                const profileRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!profileRes.ok) {
-                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
-                        headers: {
-                            Authorization: `Bearer ${tokenRefresh }`,
-                        },
-                    });
-                    if (!newRes.ok) {
-                        throw new Error("Failed to fetch user profile");
-                    }
-
-                    const newData = await newRes.json();
-                    localStorage.setItem("token", newData.token);
-                     // Retry fetching user profile with new token
-                    return fetchStats();
-                }
-
-                const profileData = await profileRes.json();
-                const signupData = profileData?.user_date;
-
-                if (!signupData) {
-                    console.error("No signup data found in profile");
-                    return;
-                }
-
                 const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user`, {
                     headers: {
                         Authorization: `Bearer ${token}`,

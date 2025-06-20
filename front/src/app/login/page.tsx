@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styles from './login.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import dataApp from '@/app/data/appareils.json';
 
 export default function Login({}) {
     const [email, setEmail] = useState('');
@@ -25,6 +26,11 @@ export default function Login({}) {
         if (res.ok) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('tokenRefresh', data.refreshToken);
+
+            if (!localStorage.getItem('appareils')) {
+                 localStorage.setItem('appareils', JSON.stringify(dataApp));
+            }
+
             alert('Connexion réussie !');
             setTimeout(() => {
                     router.push('/');
