@@ -1,0 +1,39 @@
+.privacyContainer {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #222;
+}
+
+.privacyTitle {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1a237e;
+}
+
+.privacySectionTitle {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #3949ab;
+}
+
+.privacyText {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 8px;
+}
+
+.privacyList {
+    padding-left: 24px;
+    margin-bottom: 16px;
+}
+
+.privacyList li {
+    margin-bottom: 6px;
+}
