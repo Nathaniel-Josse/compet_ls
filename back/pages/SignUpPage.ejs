@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription d'un futur utilisateur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 360px;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="/api/auth/register" method="POST">
+
+            <label for="name">Nom :</label>
+            <input type="text" name="name" required placeholder="Nom" />
+
+            <label for="email">Email :</label>
+            <input type="email" name="email" required placeholder="Email" />
+
+            <label for="password">Mot de passe que vous allez définir :</label>
+            <input type="text" name="password" required placeholder="Mot de passe" />
+
+            <label for="person">Nombre de personnes :</label>
+            <input type="number" name="person" min="1" required placeholder="Nombre de personnes" value="1" />
+
+            <label for="surface">Surface du logement (m²) :</label>
+            <select name="surface" required>
+                <option value="80">80</option>
+                <option value="100">100</option>
+                <option value="120">120</option>
+                <option value="140">140</option>
+            </select>
+
+            <label for="heating_system">Type de chauffage :</label>
+            <select name="heating_system" required>
+                <option value="électrique">Électrique</option>
+                <option value="autre">Autre</option>
+            </select>
+
+            <br><br>
+
+            <button type="submit">Inscrire l'utilisateur</button>
+        </form>
+    </div>
+</body>

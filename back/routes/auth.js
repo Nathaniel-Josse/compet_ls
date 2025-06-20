@@ -4,7 +4,7 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, person, surface, heating_system } = req.body;
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -12,7 +12,19 @@ router.post('/register', async (req, res) => {
         }
         const user = new User({ name, email, password, createdAt: new Date() });
         await user.save();
-        res.status(201).json({ message: 'User registered successfully', userId: user._id, createdAt: user.createdAt });
+
+        // We get the user Id out of the user objectId
+        const userIdString = user._id.toString();
+
+        const statRes = await fetch(`${process.env.PUBLIC_BACKEND_PATH}/api/stats/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userIdString, person: person, surface: surface, heating_system: heating_system }),
+        });
+
+        res.status(201).json({ message: `User registered successfully. If you want to return to the register page: ${process.env.PUBLIC_BACKEND_PATH}/signup-page`, email: user.email, createdAt: user.createdAt });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -21,6 +33,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     if (!user ||!(await user.comparePassword(password))) {
         return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
     }
