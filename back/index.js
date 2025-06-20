@@ -50,6 +50,14 @@ app.get('/post-page', async (req, res) => {
     }
 });
 
+app.get('/signup-page', (req, res) => {
+    try {
+        res.render('SignupPage');
+    } catch (err) {
+        res.status(500).send('Error loading signup page');
+    }
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

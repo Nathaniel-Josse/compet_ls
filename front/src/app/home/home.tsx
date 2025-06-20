@@ -85,7 +85,7 @@ return (
                 </button>
                 <div className={styles.logoContainer}>
                 <Image
-                src="/images/logo_lumea_rect_transp.png"
+                src="/images/logo_lumea_rect_transp.webp"
                 alt="Logo"
                 width={0}
                 height={0}
