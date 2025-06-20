@@ -1,11 +1,10 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
-import styles from './connexion.module.css';
+import styles from './login.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-export default function Connexion({}) {
+export default function Login({}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -37,15 +36,14 @@ export default function Connexion({}) {
     return (
         <div className={styles.container}>
             <div>
-                <Image src="/images/logo_lumea_rect_transp.png" alt="logo" width={0} height={0} sizes="30vw" style={{ width: '30vw', height: 'auto' }} />
+                <Image src="/images/logo_lumea_rect_transp.webp" alt="logo" width={0} height={0} sizes="30vw" style={{ width: '30vw', height: 'auto' }} />
             </div>
 
             <form onSubmit={handleLogin} className={styles.form}>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Email"/>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="Mot de passe"/>
-            <button type="submit">Se connecter</button>
-        </form>
-        Pas encore de compte ? <Link href="/register">Inscrivez-vous</Link>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Email"/>
+                <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="Mot de passe"/>
+                <button type="submit">Se connecter</button>
+            </form>
         </div>
     );
 }
