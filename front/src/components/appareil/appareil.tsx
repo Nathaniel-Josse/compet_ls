@@ -10,14 +10,10 @@ type Appareil = {
     brand: string;
     value: string;
     isOn: boolean;
-    brand: string;
-    value: string;
-    isOn: boolean;
 };
 
 export default function Appareils() {
     const [currentView, setCurrentView] = useState<ViewType>("accueil");
-    const [appareils, setAppareils] = useState<Appareil[]>([]);
     const [appareils, setAppareils] = useState<Appareil[]>([]);
 
     // Liste de tous les appareils
@@ -36,16 +32,7 @@ export default function Appareils() {
         if(data) {
             setAppareils(JSON.parse(data));
         }
-
-        const data = localStorage.getItem('appareils');
-        if(data) {
-            setAppareils(JSON.parse(data));
-        }
     }, []);
-
-    const total = appareils.length;
-    const allumes = appareils.filter(a => a.isOn).length;
-    const eteints = appareils.filter(a => !a.isOn).length;
 
     const total = appareils.length;
     const allumes = appareils.filter(a => a.isOn).length;
@@ -68,14 +55,6 @@ export default function Appareils() {
         localStorage.setItem('appareils', JSON.stringify(updated));
     };
 
-    const toggleAppareil = (id: number) => {
-        if (currentView !== 'appareils') return;
-        const updated = appareils.map(app =>
-            app.id === id ? { ...app, isOn: !app.isOn } : app
-        );
-        setAppareils(updated);
-        localStorage.setItem('appareils', JSON.stringify(updated));
-    };
 
     return (
         <div className={styles.container}>
