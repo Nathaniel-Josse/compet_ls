@@ -1,0 +1,16 @@
+[
+    {
+    "id": 1,
+    "name": "Robot Aspirateur",
+    "brand": "Dyson 11Absolute",
+    "value": "50%",
+    "isOn": true
+  },
+  {
+    "id": 2,
+    "name": "Ampoule Connectée",
+    "brand": "Ohillips Hue White",
+    "value": "40%",
+    "isOn": true
+  }
+]

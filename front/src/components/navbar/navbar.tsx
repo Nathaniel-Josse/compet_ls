@@ -2,15 +2,16 @@ import Image from "next/image";
 import React from "react"
 import styles from "./navbar.module.css"
 
+type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
 type NavbarProps = {
-    getButtonClass: (view: string) => string;
-    changeView: (view: string) => void;
-    currentView: string;
+    getButtonClass: (view: ViewType) => string;
+    changeView: (view: ViewType) => void;
+    currentView: ViewType;
 };
 
 const Navbar: React.FC<NavbarProps> = ({ getButtonClass, changeView, currentView }) => {
     return (
-        <div>
+        <div className={styles.navbar}>
             <button className={getButtonClass("accueil")} onClick={() => changeView("accueil")}>
                                     <div className={styles.iconWithText}>
                                         <Image src="/images/gauge.svg" alt="Home" width={16} height={16} color="#E8E8E8"/>
@@ -32,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ getButtonClass, changeView, currentView
                                 </button>
                                 <button className={getButtonClass("blog")} onClick={() => changeView("blog")}>
                                     <div className={styles.iconWithText}>
-                                        <Image src="/images/book.svg" alt="Blog" width={16} height={16} color="#E8E8E8"/>
+                                        <Image src="/images/book.svg" alt="Blog" width={16} height={16} color="#979797"/>
                                         {currentView === "blog" && <div>Blog</div>}
                                     </div>
                                 
