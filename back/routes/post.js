@@ -34,6 +34,8 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find({});
+        // Sort posts by createdAt in descending order
+        posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         res.json(posts);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch posts.' });
