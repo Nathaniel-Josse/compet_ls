@@ -6,7 +6,7 @@
   border-top: 1px solid #374151; /* fond cohérent */
   color: #979797;
   position: fixed;
-  bottom: 0;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;

@@ -54,7 +54,6 @@ export default function Graph_bar() {
                     localStorage.setItem("token", newData.token); // Retry fetching user profile with new token
                     return fetchStats();
                 }
-                console.log(statsRes);
                 const data = await statsRes.json();
                 setData(data);
             } catch (error) {
@@ -76,7 +75,6 @@ export default function Graph_bar() {
     if (!data?.stats?.total_consumed || !data.stats.updated_at) return null;
 
     const updatedAt = new Date(data.stats.updated_at); // timestamp en format Date
-    console.log(updatedAt);
     let selectedData: number[] = [];
     let labels: string[] = [];
 
@@ -153,20 +151,22 @@ export default function Graph_bar() {
                         onClick={() => setCurrentGraph("aujourd'hui")}
                         className={styles.activeButton}
                     >
-                        Aujourd hui
+                        Aujourd&apos;hui
                     </button>
-                
             </div>
             )
         }
     }
 
-    
-
     const chartData = getChartData();
 
     return (
         <div className={styles.container}>
+            {currentView === "accueil" && (
+                <div className={styles.titre}>
+                    Consommation Journalière
+                </div>
+            )}
             <div className={styles.sujet}>
                 <div>
                     <div>
@@ -184,29 +184,29 @@ export default function Graph_bar() {
                         kWh
                     </div>
                 </div>
-                
-                
             </div>
             <div>
                 {toggleButtonMenu()}
+                <div style={{ color: 'white' }}>
+                    {chartData ? (
+                        <Bar
+                            data={chartData}
+                            options={{
+                                responsive: true,
+                                plugins: {
+                                    legend: { display: false },
+                                    title: { display: true }
+                                },
+                                scales: {
+                                    y: { display: false }, // Masquer l'axe Y
+                                }
+                            }}
+                        />
+                    ) : (
+                        <p>Chargement des données...</p>
+                    )}
+                </div>
             </div>
-            {chartData ? (
-                <Bar
-                    data={chartData}
-                    options={{
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            title: { display: true,}
-                        },
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }}
-                />
-            ) : (
-                <p>Chargement des données...</p>
-            )}
         </div>
     );
 }

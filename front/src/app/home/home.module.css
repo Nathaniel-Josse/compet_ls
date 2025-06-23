@@ -2,9 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* padding: 1rem; */
   padding: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .iconContainer {
@@ -17,9 +16,9 @@
 
 .logoContainer {
   position: relative;
-  width: 30vw;        /* responsive largeur */
-  aspect-ratio: 5 / 1; /* garde un ratio horizontal propre */
-  height: auto;       /* pas besoin si aspect-ratio est là */
+  width: 100%;         /* Prend toute la largeur du parent */
+  aspect-ratio: unset; /* Optionnel : retire le ratio si tu veux que le texte prenne la largeur */
+  height: auto;      /* pas besoin si aspect-ratio est là */
 }
 
 .profilButton {
@@ -39,12 +38,17 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #E8E8E8;
+  width: 100%;           /* Prend toute la largeur disponible */
+  box-sizing: border-box;
+  display: block;
 }
 
 .text{
   margin-left: 0.5rem;
   font-size: 1rem;
   color: #b8b8b8;
+  width: 100%;           /* Prend toute la largeur disponible */
+  white-space: normal;
 }
 
 .main {

@@ -3,12 +3,21 @@
   flex-direction: column;
   align-items: stretch;
   gap: 0.5rem;
-  border: 1px solid #374151;
-  border-radius: 0.75em;
-  width: 100%;
+  width: 98%;
   height: 100%;
   margin: 1em auto;
   padding: 1rem;
+}
+
+.title{
+  font-size: 1.25em;
+  font-weight: bold;
+  color: #E8E8E8;
+}
+
+.subtitle{
+  font-size: 0.75rem;
+  color: #b8b8b8;
 }
 
 .headerRow {
@@ -29,8 +38,10 @@
 
 .blocksGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
   gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Par défaut : 1 colonne (mobile) */
 }
 
 .blocksRow {
@@ -59,10 +70,15 @@
     gap: 0.7rem;
     /* border: 1px solid #374151; */
     border-radius: 0.45em;
-    margin: 0.5em;
     padding: 0.5rem;
     height: 100%;
     box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  .blocksGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 }
 
 .topRow {

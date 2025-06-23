@@ -4,8 +4,6 @@ const router = express.Router();
 const limits = require('../utils/set_limit.json'); // Assuming limits are stored in a JSON file
 const Stat = require('../models/Stat');
 const jwt = require('jsonwebtoken');
-const { sendPushNotification} = require('../notifications');
-const { subscriptions } = require('./subscribe');
 
 router.post('/add', async (req, res) => {
     const { user_id, person, surface, heating_system} = req.body;
@@ -55,21 +53,6 @@ router.post('/add', async (req, res) => {
             const dailyConsumption = stats.total_consumed[1].reduce((a, b) => a+b, 0);
             const monthlyConsumption = stats.total_consumed[2][pastLast];
             const lastDayConsumption = stats.total_consumed[3][yearlyLast];
-
-            if (stats.limit_set_notif === true) {
-                const payload = {
-                    title: 'Alerte consommation',
-                    body: `PLACEHOLDER.`,
-                };
-
-                if (Array.isArray(subscriptions)) {
-                    for (const sub of subscriptions) {
-                        await sendPushNotification(sub, payload);
-                        }
-                    }  else {
-                        console.error('Erreur notification:');
-                    }
-            }
 
             res.status(200).json({stats,
                 currentConsumption: currentConsumption.toFixed(2),
@@ -138,15 +121,16 @@ router.put('/updateall', async (req, res) => {
             let updateMonth = stats.updated_at.getMonth();
 
             if (updateDate !== nowDay) {
+                const dailySum = stats.total_consumed[1].reduce((a, b) => a + b, 0);
                 if (updateMonth !== nowMonth) {
                     stats.total_consumed[3].push(Math.round((stats.total_consumed[1]))* 100) / 100;
                 } else {
                     stats.total_consumed[3][yearlyLast] = Math.round((stats.total_consumed[3][yearlyLast] + stats.total_consumed[1])* 100) / 100;
                 }
-                stats.total_consumed[2].push(Math.round(stats.total_consumed[1].reduce((a, b) => a+b, 0) * 100) / 100);
+                stats.total_consumed[2].push(Math.round(dailySum * 100) / 100);
                 stats.total_consumed[2][pastLast] > stats.total_consumed[1] && stats.limit_set_notif === true ? stats.limit_set_notif = true : stats.limit_set_notif = false;
                 stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;
-                stats.total_consumed[1] = [Math.round((0.00 + stats.total_consumed[0])* 100) / 100] //Need to finish later
+                stats.total_consumed[1] = [Math.round((0.00 + stats.total_consumed[0]/1000)* 100) / 100] //Need to finish later
 
             } else if (updateHour !== nowHour && updateDate === nowDay) {
                 stats.total_consumed[0] = Math.round((energie/24*1000)* 100) / 100;

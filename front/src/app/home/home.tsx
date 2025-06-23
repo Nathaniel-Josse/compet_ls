@@ -2,19 +2,100 @@ import Image from "next/image";
 import styles from "./home.module.css";
 import Consommation from "@/components/consommation/consommation";
 import Appareils from "@/components/appareil/appareil";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 import Profil from "@/components/profil/profil";
 import Graph_bar from "@/components/graph_bar/graph_bar";
+import { useRouter } from "next/navigation"
 
 type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
 type HomeProps = {
     currentView: ViewType;
 }
 
-export default function Home({currentView}: HomeProps) {
+type UserStats = {
+    name: string;
+}
 
+type StatsData = {
+    stats : {
+        limit: number;
+    }
+    dailyConsumption: number;
+};
+
+export default function Home({currentView}: HomeProps) {
+    const [data, setData] = useState<StatsData | null>(null);
+    const [user, setUser] = useState<UserStats | null>(null);
+
+    const router = useRouter();
+
+    const logoff = () => {
+        localStorage.removeItem("token");
+        router.push("/login");
+    };
     useEffect(() => {
+        const fetchStats = async () => {
+            const token = localStorage.getItem('token');
+            const tokenRefresh = localStorage.getItem('tokenRefresh');
+            if (!token) return;
+
+            const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!statsRes.ok) {
+                const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
+                    headers: {
+                        Authorization: `Bearer ${tokenRefresh }`,
+                    },
+                });
+                if (!newRes.ok) {
+                    logoff();
+                    throw new Error("Failed to fetch user stats");
+                }
+
+                const newData = await newRes.json();
+                localStorage.setItem("token", newData.token); // Retry fetching user profile with new token
+                return fetchStats();
+            }
+            const data = await statsRes.json();
+            setData(data);
+        }
+
+        const fetchUser = async () => {
+            const token = localStorage.getItem('token');
+            const tokenRefresh = localStorage.getItem('tokenRefresh');
+            if (!token) return;
+            const userRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!userRes.ok) {
+                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
+                        headers: {
+                            Authorization: `Bearer ${tokenRefresh }`,
+                        },
+                    });
+                    if (!newRes.ok) {
+                        logoff();
+                        throw new Error("Failed to fetch user profile");
+                    }
+
+                    const newData = await newRes.json();
+                    localStorage.setItem("token", newData.token);
+                     // Retry fetching user profile with new token
+                    return fetchUser();
+                }
+                const data = await userRes.json();
+                setUser(data);
+        }
+        fetchUser();
+        fetchStats();
     }, []);
     const renderContent = () => {
         switch (currentView) {
@@ -25,11 +106,13 @@ export default function Home({currentView}: HomeProps) {
             case "stats":
                 return (
                     <div>
-                        <h1 className={styles.welcome}>Statistiques</h1>
+                        <header className={styles.header}>
+                                <div className={styles.logoContainer}>
+                                    <h1 className={styles.welcome}>Ma Consommation</h1>
+                                    <h2 className={styles.text}>Surveillez votre conso et son coût</h2>
+                                </div>
+                            </header>
                         <Graph_bar />
-                        <Graph_bar />
-                    <Consommation />
-                    <Efficacite />
                     <div className={styles.text}>PLACEHOLDER...</div></div>
                 );
             case "profil":
@@ -38,18 +121,34 @@ export default function Home({currentView}: HomeProps) {
                     </div>;
             case "blog":
                 return <div>Articles</div>;
-            case "blog":
-                return <div>Articles</div>;
             default:
+                console.log(data?.dailyConsumption);
                 return (
                     <div>
                         <div>
-                            {/* Add later the other components */}
-                            {/* Add later the other components */}
-                            <Graph_bar />
-                            <Consommation />
-                            <Appareils />
-                            <Efficacite />
+                            <header className={styles.header}>
+                                <div className={styles.logoContainer}>
+                                    <h2 className={styles.text}>Bonjour,</h2>
+                                    <h1 className={styles.welcome}>{user?.name}</h1>
+                                </div>
+                                <button className={styles.iconContainer}>
+                                    <Image
+                                    src="/images/settings.svg"//
+                                    alt="Paramètres"
+                                    fill
+                                    sizes="(max-width: 600px) 24px, 6vw"
+                                    style={{ objectFit: "contain" }}
+                                    />
+                                </button>
+                            </header>
+                            <main className={styles.main}>
+                                <div>
+                                    {data && <Efficacite limit_value={data.stats.limit} daily={data.dailyConsumption} />}
+                                    <Graph_bar />
+                                    <Appareils />
+                                    <Consommation />
+                                </div>
+                            </main>
                         </div>
                     </div>
                 );
@@ -59,28 +158,7 @@ export default function Home({currentView}: HomeProps) {
 
 return (
         <div>
-            <header className={styles.header}>
-                <div className={styles.logoContainer}>
-                <h2 className={styles.text}>Bonjour,</h2>
-                <h2 className={styles.text}>Bonjour,</h2>
-                <h1 className={styles.welcome}>PLACEHOLDER</h1>
-                </div>
-                <button className={styles.iconContainer}>
-                <button className={styles.iconContainer}>
-                    <Image
-                    src="/images/settings.svg"//
-                    src="/images/settings.svg"//
-                    alt="Paramètres"
-                    fill
-                    sizes="(max-width: 600px) 24px, 6vw"
-                    style={{ objectFit: "contain" }}
-                    />
-                </button>
-            </header>
-            <main className={styles.main}>
-            <main className={styles.main}>
-                <div>{renderContent()}</div>
-            </main>
+            {renderContent()}
         </div>
-  );
+);
 }

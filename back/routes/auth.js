@@ -66,11 +66,11 @@ router.get('/profile', async (req, res) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.userId).select('email nom createdAt');
+        const user = await User.findById(decoded.userId).select('email name createdAt');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json({ user_id: decoded.userid, name: user.name, email: user.email});
+        res.status(200).json({ user_id: decoded.userId, name: user.name, email: user.email});
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
         console.error('Token verification error:', error);

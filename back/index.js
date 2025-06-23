@@ -11,7 +11,6 @@ const postRoutes = require('./routes/post');
 const cron = require('node-cron');
 const axios = require('axios');
 
-const {router: subRoutes} = require('./routes/subscribe');
 const postModel = require('./models/Post'); // Make sure this path is correct
 
 const app = express();
@@ -39,7 +38,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/stats', statRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api', subRoutes);
 
 app.get('/post-page', async (req, res) => {
     try {

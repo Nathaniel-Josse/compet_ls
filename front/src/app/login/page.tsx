@@ -28,8 +28,13 @@ export default function Login({}) {
             localStorage.setItem('tokenRefresh', data.refreshToken);
 
             if (!localStorage.getItem('appareils')) {
-                 localStorage.setItem('appareils', JSON.stringify(dataApp));
-            }
+                localStorage.setItem('appareils', JSON.stringify(dataApp));
+            } else {
+                const appareils = JSON.parse(localStorage.getItem('appareils') || '[]');
+                if (appareils.length < dataApp.length) {
+                    localStorage.setItem('appareils', JSON.stringify(dataApp));
+                }
+            }   
 
             alert('Connexion réussie !');
             setTimeout(() => {
@@ -46,7 +51,9 @@ export default function Login({}) {
             </div>
 
             <form onSubmit={handleLogin} className={styles.form}>
+                <label htmlFor="email" style={{ color: 'white' }}>Email :</label>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Email"/>
+                <label htmlFor="password" style={{ color: 'white' }}>Mot de passe :</label>
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="Mot de passe"/>
                 <button type="submit">Se connecter</button>
             </form>

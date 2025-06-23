@@ -3,17 +3,25 @@
   align-items: center;
   border: 1px solid #374151;
   border-radius: 0.75em;
-  width: 100%;
+  width: 98%;
   height: 100%;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  padding: 1rem;
+}
+
+.titre {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  /* Pas de margin-left ni de padding-left */
 }
 
 .sujet {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
   color: #E8E8E8;
-  margin-left: 1em;
   width: 90%;
 }
 

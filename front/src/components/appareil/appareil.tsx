@@ -47,7 +47,6 @@ export default function Appareils() {
     }
 
     const toggleAppareil = (id: number) => {
-        if (currentView !== 'appareils') return;
         const updated = appareils.map(app =>
             app.id === id ? { ...app, isOn: !app.isOn } : app
         );
@@ -62,12 +61,12 @@ export default function Appareils() {
                 <>
                     <div className={styles.headerRow}>
                         <div>
-                            <h1>Gestion des appareils</h1>
-                            <h2>Gérez vos appareils et leur conso</h2>
+                            <h1 className={styles.title}>Gestion des appareils</h1>
+                            <h2 className={styles.subtitle}>Gérez vos appareils et leur conso</h2>
                         </div>
                         <button className={styles.addButton}>+ Appareil</button>
-                     </div>
-                     <div className={styles.blocksRow}>
+                    </div>
+                    <div className={styles.blocksRow}>
                             <div className={styles.infoBlock}>
                                 <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
                                 {total} Appareils
@@ -81,6 +80,10 @@ export default function Appareils() {
                                 {eteints} Appareils
                             </div>
                     </div>
+                    <div className="flex items-center justify-between mt-6 mb-2">
+                        <div className="text-lg font-semibold">Appareils Connectés</div>
+                        <button className="text-xs font-medium">Tous les appareils</button>
+                    </div>
                 </>
             )}
             <div className={styles.blocksGrid}>
@@ -89,7 +92,7 @@ export default function Appareils() {
                     <div className={styles.topRow}> 
                         <Image src={`/images/appareils/${name}.png`} alt='Default' width={16} height={16}/>
                         <span className={styles.value}> {value} </span>
-                     </div>
+                    </div>
                     <div className={styles.middleRow}>
                         <div className="flex flex-col gap-1">
                             <span> {name} </span>
