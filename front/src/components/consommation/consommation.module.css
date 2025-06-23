@@ -1,74 +1,22 @@
-.containerMajor{
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.card {
+  background: #181818;
+  border-radius: 1.2rem;
+  padding: 1.5rem 1.2rem;
   display: flex;
   flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  background-color: #1d2229;
-  border: 1px solid #374151;
-  border-radius: 0.75em;
-  margin: 1em;
-  width: 90%;
-  height: 100%;
+  gap: 0.5rem;
 }
 
-.superContainer {
-    display: flex;
-    flex-wrap: wrap;
-    flex-flow: column wrap;
-    justify-content: flex-start;
-    gap: 1em;
-    margin: 1em;
-}
-
-.containerMinor {
-    display: flex;
-    flex-direction: row;
-    background-color: #1d2229;
-    border: 1px solid #374151;
-    border-radius: 0.75em;
-    margin: 1em;
-    width: calc(45% - 1em);
-    height: 100%;
-    box-sizing: border-box;
-}
-
-.type {
-    width: 2em;
-    height: 2em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.45em;
-    margin: 0.5em;
-}
-
-.title{
-  font-size: 1rem;
-  color: #b8b8b8;
-  margin-top: 0.5rem;
-  margin-left : 1rem;
-}
-
-.consoNumber{
-  font-size: 2rem;
-  font-weight: bold;
-  color: #E8E8E8;
-  margin-left : 1rem;
-}
-
-.minitext{
-  font-size: 0.75rem;
-  color: #E8E8E8;
-  display: flex;
-  flex-direction: row;
-  margin-top: 0.5rem;
-  margin-left : 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.icon {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.25rem;
-  object-fit: contain;
+.value {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: right;
 }

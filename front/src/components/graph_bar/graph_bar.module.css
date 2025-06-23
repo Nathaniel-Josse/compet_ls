@@ -1,9 +1,41 @@
+.container {
+  justify-content: center;  
+  align-items: center;
+  border: 1px solid #374151;
+  border-radius: 0.75em;
+  width: 98%;
+  height: 100%;
+  padding: 1rem;
+}
+
+.titre {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  /* Pas de margin-left ni de padding-left */
+}
+
+.sujet {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  color: #E8E8E8;
+  width: 90%;
+}
+
+
 .toggleButtons {
   display: flex;
-  justify-content: space-evenly; /* séparation égale */
-  align-items: center;
+  justify-content: flex-start; /* séparation égale */
+  gap: 1rem;
+  justify-content: flex-start; /* séparation égale */
+  gap: 1rem;
   width: 100%;
   padding: 0.75rem 0;
+  margin-left: 1em;
+  margin-left: 1em;
   border-top: 1px solid #374151;
   background-color: #1a1a1a; /* fond cohérent */
   color: #E8E8E8;
@@ -18,6 +50,14 @@
 }
 
 .activeButton {
-  background-color: #064ab5; /* Bleu */
-  border-radius: 0.75em;
+  background-color: #e6f0ff;
+  color: #1a75ff;
+  border-radius: 0.35em;
+  width: 25%;
+  height: 80%;
+  background-color: #e6f0ff;
+  color: #1a75ff;
+  border-radius: 0.35em;
+  width: 25%;
+  height: 80%;
 }

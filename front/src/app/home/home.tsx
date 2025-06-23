@@ -2,68 +2,153 @@ import Image from "next/image";
 import styles from "./home.module.css";
 import Consommation from "@/components/consommation/consommation";
 import Appareils from "@/components/appareil/appareil";
-import {useEffect, useState } from "react";
-import classNames from "classnames";
+import {useEffect, useState} from "react";
 import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 import Profil from "@/components/profil/profil";
 import Graph_bar from "@/components/graph_bar/graph_bar";
+import { useRouter } from "next/navigation"
 
-type ViewType = "accueil" | "appareils" | "stats" | "profil" | "autres";
-export default function Home() {
-    const [currentView, setCurrentView] = useState<ViewType>("accueil");
+type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
+type HomeProps = {
+    currentView: ViewType;
+}
 
-    useEffect(() => {
-        localStorage.removeItem("currentView");
-        const savedView = localStorage.getItem("currentView") as ViewType | null;
-        if (savedView) setCurrentView(savedView);
-    }, []);
+type UserStats = {
+    name: string;
+}
 
-    const changeView = (view: ViewType) => {
-        setCurrentView(view);
-        localStorage.setItem("currentView", view);
+type StatsData = {
+    stats : {
+        limit: number;
+    }
+    dailyConsumption: number;
+};
+
+export default function Home({currentView}: HomeProps) {
+    const [data, setData] = useState<StatsData | null>(null);
+    const [user, setUser] = useState<UserStats | null>(null);
+
+    const router = useRouter();
+
+    const logoff = () => {
+        localStorage.removeItem("token");
+        router.push("/login");
     };
+    useEffect(() => {
+        const fetchStats = async () => {
+            const token = localStorage.getItem('token');
+            const tokenRefresh = localStorage.getItem('tokenRefresh');
+            if (!token) return;
 
-    const getButtonClass = (view: ViewType) =>
-    classNames("footerButton", {
-    [styles.activeButton]: currentView === view,
-    });
+            const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!statsRes.ok) {
+                const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
+                    headers: {
+                        Authorization: `Bearer ${tokenRefresh }`,
+                    },
+                });
+                if (!newRes.ok) {
+                    logoff();
+                    throw new Error("Failed to fetch user stats");
+                }
+
+                const newData = await newRes.json();
+                localStorage.setItem("token", newData.token); // Retry fetching user profile with new token
+                return fetchStats();
+            }
+            const data = await statsRes.json();
+            setData(data);
+        }
+
+        const fetchUser = async () => {
+            const token = localStorage.getItem('token');
+            const tokenRefresh = localStorage.getItem('tokenRefresh');
+            if (!token) return;
+            const userRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!userRes.ok) {
+                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
+                        headers: {
+                            Authorization: `Bearer ${tokenRefresh }`,
+                        },
+                    });
+                    if (!newRes.ok) {
+                        logoff();
+                        throw new Error("Failed to fetch user profile");
+                    }
+
+                    const newData = await newRes.json();
+                    localStorage.setItem("token", newData.token);
+                     // Retry fetching user profile with new token
+                    return fetchUser();
+                }
+                const data = await userRes.json();
+                setUser(data);
+        }
+        fetchUser();
+        fetchStats();
+    }, []);
     const renderContent = () => {
         switch (currentView) {
             case "appareils":
                 return (
-                    <div>
-                    <h1 className={styles.welcome}>Vos appareils connectés</h1>
-                    <h2 className={styles.text}>Gérez et contrôlez tous vos équipements</h2>
                     <Appareils />
-                    <div className={styles.text}>PLACEHOLDER...</div></div>
                 );
             case "stats":
                 return (
                     <div>
-                        <h1 className={styles.welcome}>Statistiques</h1>
-                    <Consommation />
-                    <Efficacite />
-                    <Graph_bar />
+                        <header className={styles.header}>
+                                <div className={styles.logoContainer}>
+                                    <h1 className={styles.welcome}>Ma Consommation</h1>
+                                    <h2 className={styles.text}>Surveillez votre conso et son coût</h2>
+                                </div>
+                            </header>
+                        <Graph_bar />
                     <div className={styles.text}>PLACEHOLDER...</div></div>
                 );
             case "profil":
                 return <div>
                     <Profil />
                     </div>;
-            case "autres":
-                return <div>Autres</div>;
+            case "blog":
+                return <div>Articles</div>;
             default:
+                console.log(data?.dailyConsumption);
                 return (
                     <div>
                         <div>
-                            <h1 className={styles.welcome}>Bonjour,  !</h1>
-                            <h2 className={styles.text}>Voici un aperçu de votre consommation énergétique.</h2>
-                        </div>
-                        <div>
-                            {/* Add later the other components */}
-                            <Consommation />
-                            <Appareils />
-                            <Efficacite />
+                            <header className={styles.header}>
+                                <div className={styles.logoContainer}>
+                                    <h2 className={styles.text}>Bonjour,</h2>
+                                    <h1 className={styles.welcome}>{user?.name}</h1>
+                                </div>
+                                <button className={styles.iconContainer}>
+                                    <Image
+                                    src="/images/settings.svg"//
+                                    alt="Paramètres"
+                                    fill
+                                    sizes="(max-width: 600px) 24px, 6vw"
+                                    style={{ objectFit: "contain" }}
+                                    />
+                                </button>
+                            </header>
+                            <main className={styles.main}>
+                                <div>
+                                    {data && <Efficacite limit_value={data.stats.limit} daily={data.dailyConsumption} />}
+                                    <Graph_bar />
+                                    <Appareils />
+                                    <Consommation />
+                                </div>
+                            </main>
                         </div>
                     </div>
                 );
@@ -73,52 +158,7 @@ export default function Home() {
 
 return (
         <div>
-            <header className={styles.header}>
-                <button className={styles.iconContainer} onClick={() => changeView("profil")}>
-                    <Image
-                    src="/images/user.svg"
-                    alt="Profil"
-                    fill
-                    sizes="(max-width: 600px) 24px, 6vw"
-                    style={{ objectFit: "contain" }}
-                    />
-                </button>
-                <div className={styles.logoContainer}>
-                <Image
-                src="/images/logo_lumea_rect_transp.webp"
-                alt="Logo"
-                width={0}
-                height={0}
-                sizes="30vw"
-                style={{ width: '30vw', height: 'auto' }}
-                />
-                </div>
-                <button className={styles.iconContainer} onClick={() => changeView("autres")}>
-                    <Image
-                    src="/images/settings.svg"
-                    alt="Paramètres"
-                    fill
-                    sizes="(max-width: 600px) 24px, 6vw"
-                    style={{ objectFit: "contain" }}
-                    />
-                </button>
-            </header>
-            <main>
-                <div>{renderContent()}</div>
-            </main>
-            <footer className={styles.footer}>
-                <button className={getButtonClass("accueil")} onClick={() => changeView("accueil")}>
-                    <div><Image src="/images/house.svg" alt="Home" width={16} height={16} color="#E8E8E8"/></div>
-                    <div>Accueil</div>
-                </button>
-                <button className={getButtonClass("appareils")} onClick={() => changeView("appareils")}>
-                    <div><Image src="/images/house.svg" alt="Appareil" width={16} height={16} color="#E8E8E8"/></div>
-                    <div>Appareil</div>
-                </button>
-                <button className={getButtonClass("stats")} onClick={() => changeView("stats")}>
-                    <Image src="/images/house.svg" alt="Stat" width={16} height={16} color="#E8E8E8"/> Statistique
-                </button>
-            </footer>
+            {renderContent()}
         </div>
-  );
+);
 }

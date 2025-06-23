@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation"
 
 type StatsData = {
+    stats: {
+        total_consumed: [number, number[], number[], number[]];
+    };
     currentConsumption: number;
     dailyConsumption: number;
     monthlyConsumption: number;
@@ -14,6 +17,7 @@ export default function Consommation() {
     const [data, setData] = useState<StatsData | null>(null);
 
     const router = useRouter();
+    const dailyPrice = 0.2016;
 
     const logoff = () => {
         localStorage.removeItem("token");
@@ -25,38 +29,6 @@ export default function Consommation() {
             const token = localStorage.getItem('token');
             const tokenRefresh = localStorage.getItem('tokenRefresh');
             if (!token) return;
-
-            try {
-                const profileRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!profileRes.ok) {
-                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
-                        headers: {
-                            Authorization: `Bearer ${tokenRefresh }`,
-                        },
-                    });
-                    if (!newRes.ok) {
-                        throw new Error("Failed to fetch user profile");
-                        logoff();
-                    }
-
-                    const newData = await newRes.json();
-                    localStorage.setItem("token", newData.token);
-                     // Retry fetching user profile with new token
-                    return fetchStats();
-                }
-
-                const profileData = await profileRes.json();
-                const signupData = profileData?.user_date;
-
-                if (!signupData) {
-                    console.error("No signup data found in profile");
-                    return;
-                }
 
                 const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user`, {
                     headers: {
@@ -71,6 +43,7 @@ export default function Consommation() {
                         },
                     });
                     if (!newRes.ok) {
+                        logoff();
                         throw new Error("Failed to fetch user stats");
                     }
 
@@ -78,41 +51,54 @@ export default function Consommation() {
                     localStorage.setItem("token", newData.token); // Retry fetching user profile with new token
                     return fetchStats();
                 }
-                console.log(statsRes);
                 const data = await statsRes.json();
                 setData(data);
-            } catch (error) {
-                console.error("Error fetching user profile:", error);
-            }
         }
         fetchStats();
     }
     , []);
 
+    function formatTotalTime(listDays: number[]): string {
+        if (listDays.length < 31) {
+            return `${listDays.length} jour${listDays.length > 1 ? 's' : ''}`;
+        }
+        const months = Math.floor(listDays.length / 30);
+        const days = listDays.length % 30;
+        console.log(months, days);
+        let result = `${months} mois`;
+        if (days > 0) result += ` et ${days} jour${days > 1 ? 's' : ''}`;
+        return result;
+    }
+
     return (
         <div>
-            <div    className={styles.containerMajor}>
-                <div className={styles.title}>Consommation actuelle</div>
-                <div className={styles.consoNumber}>{data ? `${data.currentConsumption}W` : 'Chargement...'}</div>
-                <div className={styles.minitext}>
-                    <div><Image src="/images/trending-up.svg" alt="Profil" className={styles.icon} width={16} height={16}/> </div>
-                    <div>+12% par rapport à hier</div>
+            <div className={styles.title}>
+                Consommation Électrique
+            </div>
+            <div className={styles.card}>
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                        <Image src="/images/blog.svg" alt="alt" width={16} height={16} />
+                        <span>Consommation</span>
+                    </div>
+                    <div className={styles.value}>{data ? data.dailyConsumption : null}</div>
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                        <Image src="/images/blog.svg" alt="alt" width={16} height={16} />
+                        <span>Estimation Cout</span> 
+                    </div>
+                    <div className={styles.value}>{data ? ((data.dailyConsumption * dailyPrice).toFixed(2)) : null} €</div>
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                        <Image src="/images/blog.svg" alt="alt" width={16} height={16} />
+                        <span>Durée d&apos;Usage</span> 
+                    </div>
+                    <div className={styles.value}>{formatTotalTime(data ? data.stats.total_consumed[2] : [])}</div>
                 </div>
             </div>
-            <div className='superContainer'>
-                <div className={styles.containerMinor}>
-                    <div className={styles.type} style={{backgroundColor: "#3b482a", borderColor: "#374151"}}>
-                        <Image src="/images/rotate-ccw.svg" alt="Profil" width={16} height={16} color="#bdff5f"/>
-                    </div>
-                    <div>Aujourd&apos;hui<h1>{data ? `${data.dailyConsumption}kWh` : 'Chargement...'}</h1></div>
-                </div>
-                <div className={styles.containerMinor}>
-                    <div className={styles.type} style={{backgroundColor: "#453a1e", borderColor: "#374151"}}>
-                        <Image src="/images/house.svg" alt="Profil" width={16} height={16} color="#E8E8E8"/>
-                    </div>
-                    <div>Ce mois-ci<h1>{data ? `${data.monthlyConsumption}kWh` : 'Chargement...'}</h1></div>
-                </div>
-            </div>
+           
         </div>
     );
 }

@@ -17,10 +17,12 @@ type StatsData = {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, Legend, Filler );
 
-type ViewType = "aujourd'hui" | "semaine" | "mois" | "année";
+type GraphType = "aujourd'hui" | "semaine" | "mois" | "année";
+type ViewType = "accueil" | "stats" | "autres";
 
 export default function Graph_bar() {
-    const [currentGraph, setCurrentGraph] = useState<ViewType>("aujourd'hui")
+    const [currentGraph, setCurrentGraph] = useState<GraphType>("aujourd'hui")
+    const [currentView, setCurrentView] = useState<ViewType>("accueil");
     const [data, setData] = useState<StatsData | null>(null);
 
     const date = new Date();
@@ -32,36 +34,6 @@ export default function Graph_bar() {
             if (!token) return;
 
             try {
-                const profileRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/profile`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!profileRes.ok) {
-                    const newRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`, {
-                        headers: {
-                            Authorization: `Bearer ${tokenRefresh }`,
-                        },
-                    });
-                    if (!newRes.ok) {
-                        throw new Error("Failed to fetch user profile");
-                    }
-
-                    const newData = await newRes.json();
-                    localStorage.setItem("token", newData.token);
-                     // Retry fetching user profile with new token
-                    return fetchStats();
-                }
-
-                const profileData = await profileRes.json();
-                const signupData = profileData?.user_date;
-
-                if (!signupData) {
-                    console.error("No signup data found in profile");
-                    return;
-                }
-
                 const statsRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stats/user`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -82,7 +54,6 @@ export default function Graph_bar() {
                     localStorage.setItem("token", newData.token); // Retry fetching user profile with new token
                     return fetchStats();
                 }
-                console.log(statsRes);
                 const data = await statsRes.json();
                 setData(data);
             } catch (error) {
@@ -90,6 +61,13 @@ export default function Graph_bar() {
             }
         }
         fetchStats();
+
+        const view = localStorage.getItem('currentView');
+        if (view === "accueil" || view === "stats" || view === "autres") {
+            setCurrentView(view);
+        } else {
+            setCurrentView("accueil");
+        }
     }
     , []);
 
@@ -97,7 +75,6 @@ export default function Graph_bar() {
     if (!data?.stats?.total_consumed || !data.stats.updated_at) return null;
 
     const updatedAt = new Date(data.stats.updated_at); // timestamp en format Date
-    console.log(updatedAt);
     let selectedData: number[] = [];
     let labels: string[] = [];
 
@@ -154,42 +131,82 @@ export default function Graph_bar() {
         }]
     };
 };
-
-    const chartData = getChartData();
-
-    return (
-        <div>
-            {date.toLocaleString()}
-            {data ? `${data.dailyConsumption}kWh` : 'Chargement...'}
-            <div className={styles.toggleButtons}>
+    const toggleButtonMenu = () => {
+        if(currentView === 'stats') {
+            return (<div className={styles.toggleButtons}>
                 {["aujourd'hui", "semaine", "mois", "année"].map((type) => (
                     <button
                         key={type}
-                        onClick={() => setCurrentGraph(type as ViewType)}
+                        onClick={() => setCurrentGraph(type as GraphType)}
                         className={currentGraph === type ? styles.activeButton : ""}
                     >
                         {type}
                     </button>
                 ))}
+            </div>)
+        } else {
+            return (
+                <div className={styles.toggleButtons}>
+                    <button
+                        onClick={() => setCurrentGraph("aujourd'hui")}
+                        className={styles.activeButton}
+                    >
+                        Aujourd&apos;hui
+                    </button>
             </div>
+            )
+        }
+    }
 
-            {chartData ? (
-                <Bar
-                    data={chartData}
-                    options={{
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            title: { display: true, text: `Vue: ${currentGraph}` }
-                        },
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }}
-                />
-            ) : (
-                <p>Chargement des données...</p>
+    const chartData = getChartData();
+
+    return (
+        <div className={styles.container}>
+            {currentView === "accueil" && (
+                <div className={styles.titre}>
+                    Consommation Journalière
+                </div>
             )}
+            <div className={styles.sujet}>
+                <div>
+                    <div>
+                        {date.toLocaleDateString("fr-FR", {weekday: "long",})},
+                    </div>
+                    <div className={styles.date}>
+                        {date.toLocaleDateString("fr-FR", {year: "numeric", month: "long", day: "numeric",})}
+                    </div>
+                </div>
+                <div>
+                    <div className={styles.consommation}>
+                        {data ? `${data.dailyConsumption}` : 'Chargement...'}
+                    </div>
+                    <div>
+                        kWh
+                    </div>
+                </div>
+            </div>
+            <div>
+                {toggleButtonMenu()}
+                <div style={{ color: 'white' }}>
+                    {chartData ? (
+                        <Bar
+                            data={chartData}
+                            options={{
+                                responsive: true,
+                                plugins: {
+                                    legend: { display: false },
+                                    title: { display: true }
+                                },
+                                scales: {
+                                    y: { display: false }, // Masquer l'axe Y
+                                }
+                            }}
+                        />
+                    ) : (
+                        <p>Chargement des données...</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

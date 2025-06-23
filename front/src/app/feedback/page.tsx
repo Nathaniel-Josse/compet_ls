@@ -55,9 +55,10 @@ export default function Feedback() {
     };
 
     return (
-        <div>
-            <Image src="/images/logo_lumea_rect_transp.webp" alt="alt" width={100} height={100} />
+        <div className={styles.container}>
+            <Image src="/images/logo_lumea_rect_transp.webp" alt="alt" width={1000} height={1000} />
             <form className={styles.form} onSubmit={handleSubmit}>
+                <label htmlFor="object"></label>
                 <select name="object" title="Objet" value={object} onChange={e => setObject(e.target.value)} required>
                     <option value="" disabled>Choisissez un objet</option>
                     <option value="Retour sur l'application">Problème de connexion</option>
@@ -65,7 +66,8 @@ export default function Feedback() {
                     <option value="Amélioration">Amélioration</option>
                     <option value="Autre">Autre</option>
                 </select>
-                <input type="textarea" value={content} onChange={e => setContent(e.target.value)} required placeholder="Votre retour..."/>
+                <label htmlFor="content"></label>
+                <input name="content" type="textarea" value={content} onChange={e => setContent(e.target.value)} required placeholder="Votre retour..."/>
                 <button type="submit">Envoyer votre feedback</button>
             </form>
             <Link href="/">Retour à l&apos;accueil </Link>

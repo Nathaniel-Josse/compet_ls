@@ -1,17 +1,9 @@
-.page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 100px;
-}
-
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* padding: 1rem; */
   padding: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .iconContainer {
@@ -24,10 +16,9 @@
 
 .logoContainer {
   position: relative;
-  width: 30vw;        /* responsive largeur */
-  aspect-ratio: 5 / 1; /* garde un ratio horizontal propre */
-  max-width: 160px;
-  height: auto;       /* pas besoin si aspect-ratio est là */
+  width: 100%;         /* Prend toute la largeur du parent */
+  aspect-ratio: unset; /* Optionnel : retire le ratio si tu veux que le texte prenne la largeur */
+  height: auto;      /* pas besoin si aspect-ratio est là */
 }
 
 .profilButton {
@@ -47,38 +38,22 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #E8E8E8;
+  width: 100%;           /* Prend toute la largeur disponible */
+  box-sizing: border-box;
+  display: block;
 }
 
 .text{
   margin-left: 0.5rem;
   font-size: 1rem;
   color: #b8b8b8;
+  width: 100%;           /* Prend toute la largeur disponible */
+  white-space: normal;
 }
 
-.footer {
-  display: flex;
-  justify-content: space-evenly; /* séparation égale */
-  align-items: center;
-  position: fixed; /* pour que ça reste en bas */
-  bottom: 0;
-  width: 100%;
-  padding: 0.75rem 0;
-  border-top: 1px solid #374151;
-  background-color: #1a1a1a; /* fond cohérent */
-  color: #E8E8E8;
+.main {
+  width: 100vw;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
-
-.footerButton {
-  align-items: center;
-  background: none;
-  border: none;
-  color: #E8E8E8;
-  font-size: 0.9rem;
-}
-
-.activeButton {
-  background-color: #064ab5; /* Bleu */
-  border-radius: 0.75em;
-}
-
-

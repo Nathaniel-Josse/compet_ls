@@ -39,8 +39,8 @@ export default function Profil() {
 
                     const newData = await newRes.json();
                     localStorage.setItem("token", newData.token);
-                    fetchUser(); // Retry fetching user profile with new token
-                    return;
+                     // Retry fetching user profile with new token
+                    return fetchUser();
                 }
 
                 const data = await res.json();
