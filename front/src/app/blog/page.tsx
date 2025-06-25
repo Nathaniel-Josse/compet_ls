@@ -52,16 +52,17 @@ const BlogPage: React.FC = () => {
 
     return (
         <main>
-            <Link href="/" style={{ display: "inline-block" }}>
-                <Image
-                    src="/images/logo_lumea_rect_transp.webp"
-                    alt="Logo de Luméa"
-                    className={styles.logo}
-                    width={120}
-                    height={120}
-                    priority
-                />
-            </Link>
+            <div className="logoContainer">
+                <Link href="/" style={{ display: "inline-block" }}>
+                    <Image
+                        src="/images/logo_lumea_rect_transp.webp"
+                        alt="Logo de Luméa"
+                        width={360}
+                        height={360}
+                        priority
+                    />
+                </Link>
+            </div>
             <h1 className={styles.h1Title}>Articles de notre blog</h1>
             {posts.length === 0 ? (
                 <p>Aucun post publié.</p>
