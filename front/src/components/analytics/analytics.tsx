@@ -34,6 +34,61 @@ export default function AnalyticsConsent() {
     else if (consent === "granted") loadGAScript();
   }, []);
 
+  useEffect(() => {
+    // 1. Envoi d'un événement à chaque clic sur un bouton
+    const handleButtonClick = (e: MouseEvent) => {
+      if (
+        window.gtag &&
+        localStorage.getItem("ga_consent") === "granted" &&
+        (e.target as HTMLElement).tagName.toLowerCase() === "button"
+      ) {
+        const label =
+          (e.target as HTMLElement).innerText ||
+          (e.target as HTMLElement).id ||
+          "button";
+        window.gtag("event", "button_click", {
+          event_category: "interaction",
+          event_label: label,
+        });
+      }
+    };
+    window.addEventListener("click", handleButtonClick);
+
+    // 2. Envoi d'un événement à chaque changement de currentView
+    let lastView = localStorage.getItem("currentView");
+    const checkCurrentView = () => {
+      const newView = localStorage.getItem("currentView");
+      if (
+        window.gtag &&
+        localStorage.getItem("ga_consent") === "granted" &&
+        newView &&
+        newView !== lastView
+      ) {
+        window.gtag("event", "currentView_change", {
+          event_category: "navigation",
+          event_label: newView,
+        });
+        lastView = newView;
+      }
+    };
+    // Surveille les changements locaux (dans cette fenêtre)
+    const origSetItem = localStorage.setItem;
+    localStorage.setItem = function (key, value) {
+      origSetItem.apply(this, [key, value]);
+      if (key === "currentView") checkCurrentView();
+    };
+    // Surveille les changements dans d'autres onglets
+    window.addEventListener("storage", (e) => {
+      if (e.key === "currentView") checkCurrentView();
+    });
+
+    return () => {
+      window.removeEventListener("click", handleButtonClick);
+      window.removeEventListener("storage", checkCurrentView);
+      localStorage.setItem = origSetItem;
+    };
+  }, []);
+
   if (!showPopup) return null;
 
     function handleConsent(granted: boolean): void {
