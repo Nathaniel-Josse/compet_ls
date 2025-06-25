@@ -1,4 +1,3 @@
-import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./single.module.css";
@@ -25,12 +24,9 @@ async function getPost(id: string): Promise<Post | null> {
     }
 }
 
-interface PageProps {
-    params: { id: string };
-}
-
-const PostPage: FC<PageProps> = async ({ params }) => {
-    const post = await getPost(params.id);
+export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const post = await getPost(id);
 
     if (!post) {
         return <div>Article non trouvé.</div>;
@@ -39,7 +35,7 @@ const PostPage: FC<PageProps> = async ({ params }) => {
     return (
         <main className={styles.singleContainer}>
             <div className={styles.singleBack}>
-                <Link href="/" className={styles.singleBackLink}>
+                <Link href="/blog" className={styles.singleBackLink}>
                     <span className={styles.singleBackArrow}>&larr;</span>
                     Retour au blog
                 </Link>
@@ -88,5 +84,3 @@ const PostPage: FC<PageProps> = async ({ params }) => {
         </main>
     );
 };
-
-export default PostPage;
