@@ -2,6 +2,7 @@
     {
     "id": 1,
     "name": "Robot Aspirateur",
+    "filename": "robot-aspirateur",
     "brand": "Dyson 11Absolute",
     "value": "50%",
     "isOn": true
@@ -9,6 +10,7 @@
   {
     "id": 2,
     "name": "Ampoule Connectée",
+    "filename": "ampoule-connectee",
     "brand": "Ohillips Hue White",
     "value": "40%",
     "isOn": true
@@ -16,6 +18,7 @@
   {
     "id": 3,
     "name": "Ampoule Connectée",
+    "filename": "ampoule-connectee",
     "brand": "Philips Hue Color",
     "value": "30%",
     "isOn": true
@@ -23,6 +26,7 @@
   {
     "id": 4,
     "name": "Climatiseur",
+    "filename": "climatiseur",
     "brand": "Dyson Pure Cool",
     "value": "20°C",
     "isOn": true
@@ -30,6 +34,7 @@
   {
     "id": 5,
     "name": "Enceinte",
+    "filename": "enceinte",
     "brand": "JBL Charge 3",
     "value": "20%",
     "isOn": false
@@ -37,6 +42,7 @@
   {
     "id": 6,
     "name": "Four",
+    "filename": "four",
     "brand": "Rosieres R06",
     "value": "200°C",
     "isOn": false
@@ -44,6 +50,7 @@
   {
     "id": 7,
     "name": "Machine à Café",
+    "filename": "machine-a-cafe",
     "brand": "Nespresso Vertuo",
     "value": "80%",
     "isOn": true
@@ -51,6 +58,7 @@
   {
     "id": 8,
     "name": "Radiateur",
+    "filename": "radiateur",
     "brand": "DE'Longhi Easy",
     "value": "17°C",
     "isOn": true

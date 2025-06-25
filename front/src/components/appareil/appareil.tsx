@@ -7,6 +7,7 @@ type ViewType = "accueil" | "appareils" | "autres";
 type Appareil = {
     id: number;
     name: string;
+    filename: string;
     brand: string;
     value: string;
     isOn: boolean;
@@ -87,10 +88,10 @@ export default function Appareils() {
                 </>
             )}
             <div className={styles.blocksGrid}>
-                {appareilsToShow.map(({ id, name, value, brand, isOn }) => (
+                {appareilsToShow.map(({ id, name, filename, value, brand, isOn }) => (
                 <div key={id} className={styles.block}>
                     <div className={styles.topRow}> 
-                        <Image src={`/images/appareils/${name}.png`} alt='Default' width={64} height={64}/>
+                        <Image src={`/images/appareils/${filename}.webp`} alt='Default' width={64} height={64}/>
                         <span className={styles.value}> {value} </span>
                     </div>
                     <div className={styles.middleRow}>
