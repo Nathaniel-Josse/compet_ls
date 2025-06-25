@@ -176,11 +176,11 @@ export default function Graph_bar() {
                         {date.toLocaleDateString("fr-FR", {year: "numeric", month: "long", day: "numeric",})}
                     </div>
                 </div>
-                <div>
-                    <div className={styles.consommation}>
+                <div className="min-w-[56px] h-[80px] rounded-xl overflow-hidden shadow flex flex-col ml-auto">
+                    <div className="flex-1 flex items-end justify-center bg-[#2c2c2c] text-white text-2xl font-medium px-4 py-1 w-auto">
                         {data ? `${data.dailyConsumption}` : 'Chargement...'}
                     </div>
-                    <div>
+                    <div className="h-8 flex items-center justify-center bg-[#181818] text-[#2976f6] text-base font-medium">
                         kWh
                     </div>
                 </div>

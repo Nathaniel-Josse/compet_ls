@@ -1,12 +1,14 @@
 import Image from "next/image";
+import BlogPage from "../blog/page";
 import styles from "./home.module.css";
-import Consommation from "@/components/consommation/consommation";
-import Appareils from "@/components/appareil/appareil";
 import {useEffect, useState} from "react";
-import Efficacite from "@/components/efficacite_energie/efficacite_energie";
-import Profil from "@/components/profil/profil";
-import Graph_bar from "@/components/graph_bar/graph_bar";
 import { useRouter } from "next/navigation"
+import Types from "@/components/types/types";
+import Profil from "@/components/profil/profil";
+import Appareils from "@/components/appareil/appareil";
+import Graph_bar from "@/components/graph_bar/graph_bar";
+import Consommation from "@/components/consommation/consommation";
+import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 
 type ViewType = "accueil" | "appareils" | "stats" | "profil" | "blog" | "autre";
 type HomeProps = {
@@ -113,14 +115,16 @@ export default function Home({currentView}: HomeProps) {
                                 </div>
                             </header>
                         <Graph_bar />
-                    <div className={styles.text}>PLACEHOLDER...</div></div>
+                        <Types /></div>
                 );
             case "profil":
                 return <div>
                     <Profil />
                     </div>;
             case "blog":
-                return <div>Articles</div>;
+                return <div>
+                    <BlogPage />
+                </div>;
             default:
                 console.log(data?.dailyConsumption);
                 return (
@@ -133,7 +137,7 @@ export default function Home({currentView}: HomeProps) {
                                 </div>
                                 <button className={styles.iconContainer}>
                                     <Image
-                                    src="/images/settings.svg"//
+                                    src="/images/Bell.svg"
                                     alt="Paramètres"
                                     fill
                                     sizes="(max-width: 600px) 24px, 6vw"

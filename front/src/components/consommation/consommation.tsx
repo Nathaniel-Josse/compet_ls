@@ -71,28 +71,28 @@ export default function Consommation() {
     }
 
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.title}>
                 Consommation Électrique
             </div>
             <div className={styles.card}>
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                        <Image src="/images/blog.svg" alt="alt" width={16} height={16} />
+                <div className={styles.row}>
+                    <div className={styles.label}>
+                        <Image src="/images/consommation.svg" alt="alt" width={16} height={16} />
                         <span>Consommation</span>
                     </div>
-                    <div className={styles.value}>{data ? data.dailyConsumption : null}</div>
+                    <div className={styles.value}>{data ? data.dailyConsumption : null} kWh</div>
                 </div>
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                        <Image src="/images/blog.svg" alt="alt" width={16} height={16} />
+                <div className={styles.row}>
+                    <div className={styles.label}>
+                        <Image src="/images/money.svg" alt="alt" width={16} height={16} />
                         <span>Estimation Cout</span> 
                     </div>
                     <div className={styles.value}>{data ? ((data.dailyConsumption * dailyPrice).toFixed(2)) : null} €</div>
                 </div>
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                        <Image src="/images/blog.svg" alt="alt" width={16} height={16} />
+                <div className={styles.row}>
+                    <div className={styles.label}>
+                        <Image src="/images/time.svg" alt="alt" width={16} height={16} />
                         <span>Durée d&apos;Usage</span> 
                     </div>
                     <div className={styles.value}>{formatTotalTime(data ? data.stats.total_consumed[2] : [])}</div>

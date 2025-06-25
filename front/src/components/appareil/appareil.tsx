@@ -68,15 +68,15 @@ export default function Appareils() {
                     </div>
                     <div className={styles.blocksRow}>
                             <div className={styles.infoBlock}>
-                                <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
+                                <Image src='/images/appareil_all.svg' alt='computerIcon' width={16} height={16}/>
                                 {total} Appareils
                             </div>
                             <div className={styles.infoBlock}>
-                                <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
+                                <Image src='/images/appareil_on.svg' alt='computerIcon' width={16} height={16}/>
                                 {allumes} Appareils
                             </div>
                             <div className={styles.infoBlock}>
-                                <Image src='/images/power.svg' alt='computerIcon' width={16} height={16}/>
+                                <Image src='/images/appareil_off.svg' alt='computerIcon' width={16} height={16}/>
                                 {eteints} Appareils
                             </div>
                     </div>
@@ -90,13 +90,13 @@ export default function Appareils() {
                 {appareilsToShow.map(({ id, name, value, brand, isOn }) => (
                 <div key={id} className={styles.block}>
                     <div className={styles.topRow}> 
-                        <Image src={`/images/appareils/${name}.png`} alt='Default' width={16} height={16}/>
+                        <Image src={`/images/appareils/${name}.png`} alt='Default' width={64} height={64}/>
                         <span className={styles.value}> {value} </span>
                     </div>
                     <div className={styles.middleRow}>
-                        <div className="flex flex-col gap-1">
-                            <span> {name} </span>
-                            <span> {brand} </span>
+                        <div className="flex-1 min-w-0">
+                            <span className="block font-medium text-white truncate whitespace-nowrap overflow-hidden"> {name} </span>
+                            <span className="block text-sm text-gray-400 truncate whitespace-nowrap overflow-hidden"> {brand} </span>
                         </div>
                         <div className={styles.sliderWrapper}>
                             <label className={styles.switch}>

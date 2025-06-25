@@ -7,11 +7,11 @@
 }
 
 .iconContainer {
-  width: 6vw;
-  height: 6vw;
-  max-width: 32px;
-  max-height: 32px;
+  width: clamp(32px, 5vw, 56px);
+  height: clamp(32px, 5vw, 56px);
   position: relative;
+  background: #4A4A4A;
+  border-radius: 0.45em;
 }
 
 .logoContainer {

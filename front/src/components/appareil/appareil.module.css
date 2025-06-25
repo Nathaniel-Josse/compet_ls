@@ -5,7 +5,8 @@
   gap: 0.5rem;
   width: 98%;
   height: 100%;
-  margin: 1em auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
   padding: 1rem;
 }
 
@@ -49,10 +50,13 @@
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1rem;
+  background-color: #1D1D1D;
+  border-radius: 0.45em;
+  padding: 0.7rem 0.7rem;
 }
 
 .infoBlock {
-  background: #b9b9b9;
+  background: #4A4A4A;
   border-radius: 0.45em;
   flex: 1 1 0;
   display: flex;
@@ -66,7 +70,7 @@
 .block {
     display: flex;
     flex-direction: column;
-    background-color: #374151;
+    background-color: #1D1D1D;
     gap: 0.7rem;
     /* border: 1px solid #374151; */
     border-radius: 0.45em;
@@ -91,10 +95,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #FFFFFF;
 }
 
 .sliderWrapper {
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   justify-content: flex-end;
 }

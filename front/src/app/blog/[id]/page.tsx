@@ -39,7 +39,7 @@ const PostPage: FC<PageProps> = async ({ params }) => {
     return (
         <main className={styles.singleContainer}>
             <div className={styles.singleBack}>
-                <Link href="/blog" className={styles.singleBackLink}>
+                <Link href="/" className={styles.singleBackLink}>
                     <span className={styles.singleBackArrow}>&larr;</span>
                     Retour au blog
                 </Link>
