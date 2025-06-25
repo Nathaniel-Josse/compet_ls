@@ -65,7 +65,11 @@
                 <% if (posts && posts.length > 0) { %>
                     <% posts.forEach(function(post) { %>
                         <tr>
-                            <td><%= post.title %></td>
+                            <td>
+                                <a href="<%= frontend_link %>/blog/<%= post._id %>" target="_blank">
+                                    <%= post.title %>
+                                </a>
+                            </td>
                             <td><%= post.author %></td>
                             <td>
                                 <% if (post.tags && post.tags.length > 0) { %>

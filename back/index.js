@@ -42,7 +42,7 @@ app.use('/api/posts', postRoutes);
 app.get('/post-page', async (req, res) => {
     try {
         const posts = await postModel.find({});
-        res.render('PostPage', { posts });
+        res.render('PostPage', { posts, frontend_link: process.env.PUBLIC_FRONTEND_PATH });
     } catch (err) {
         res.status(500).send('Error loading posts');
     }
