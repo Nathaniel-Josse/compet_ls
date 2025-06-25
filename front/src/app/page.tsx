@@ -54,7 +54,9 @@ export default function Index() {
     <Home currentView={currentView}/>
     <Navbar getButtonClass={getButtonClass} changeView={changeView} currentView={currentView}/>
   </div>
-  : <div>Chargement...</div>;
+  : <div className="spinnerContainer">
+      <div className="spinner"></div>
+    </div>;
   // return (
   //   <div><Home/></div>
   // );

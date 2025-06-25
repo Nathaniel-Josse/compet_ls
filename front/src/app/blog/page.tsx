@@ -44,8 +44,8 @@ const BlogPage: React.FC = () => {
 
     if (loading)
         return (
-            <div className={styles.spinnerContainer}>
-                <div className={styles.spinner}></div>
+            <div className="spinnerContainer">
+                <div className="spinner"></div>
             </div>
         );
     if (error) return <div>Erreur : {error}</div>;
