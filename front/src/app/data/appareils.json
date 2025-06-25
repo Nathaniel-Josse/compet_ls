@@ -1,0 +1,58 @@
+[
+    {
+    "id": 1,
+    "name": "Robot Aspirateur",
+    "brand": "Dyson 11Absolute",
+    "value": "50%",
+    "isOn": true
+  },
+  {
+    "id": 2,
+    "name": "Ampoule Connectée",
+    "brand": "Ohillips Hue White",
+    "value": "40%",
+    "isOn": true
+  },
+  {
+    "id": 3,
+    "name": "Ampoule Connectée",
+    "brand": "Philips Hue Color",
+    "value": "30%",
+    "isOn": true
+  },
+  {
+    "id": 4,
+    "name": "Climatiseur",
+    "brand": "Dyson Pure Cool",
+    "value": "20°C",
+    "isOn": true
+  },
+  {
+    "id": 5,
+    "name": "Enceinte",
+    "brand": "JBL Charge 3",
+    "value": "20%",
+    "isOn": false
+  },
+  {
+    "id": 6,
+    "name": "Four",
+    "brand": "Rosieres R06",
+    "value": "200°C",
+    "isOn": false
+  },
+  {
+    "id": 7,
+    "name": "Machine à Café",
+    "brand": "Nespresso Vertuo",
+    "value": "80%",
+    "isOn": true
+  },
+  {
+    "id": 8,
+    "name": "Radiateur",
+    "brand": "DE'Longhi Easy",
+    "value": "17°C",
+    "isOn": true
+  }
+]

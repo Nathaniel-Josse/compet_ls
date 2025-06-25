@@ -2,21 +2,39 @@ import Image from 'next/image';
 import styles from './efficacite_energie.module.css';
 import ProgressBar from '../progressbar/progress';
 
-export default function Efficacite() {
+interface EfficaciteProps {
+    limit_value: number;
+    daily : number;
+}
+
+export default function Efficacite({limit_value, daily}: EfficaciteProps) {
     return (
         <div className={styles.containerMajor}>
-            <div className={styles.title}>Efficacité énergétique</div>
+            <div>
+                <div className={styles.title}>
+                    <Image src="/images/notif.svg" alt="alt" width={16} height={16} /> Notifications</div>
+                <div className={styles.sliderWrapper}>
+                    <label className={styles.switch}>
+                        <input type="checkbox" defaultChecked/>
+                        <span className={styles.slider}>
+                            <span className={styles.powerIcon}>
+                                <Image src='images/power.svg' alt='Default' width={16} height={16} />
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            </div>
             <div className={styles.barContainer}>
                 <div className={styles.row}>
-                    <div>Score d&apos;efficacité</div>
-                    <div>85%</div>
+                    <div className="mb-2">Seuil de consommation</div>
+                    <div>{limit_value} kWh</div>
                 </div>
                 <div>
-                    <ProgressBar value={85} />
+                    <ProgressBar value={daily} limit={limit_value}/>
                 </div>
             </div>
             <div className={styles.containerMinor}>
-                <Image src="/images/lightbulb.svg" alt="lightbulb" width={16} height={16} /> Conseil : Éteignez la climatisation quand vous n&apos;êtes pas à la maison pour économiser jusqu&apos;à 30% d&apos;énergie.
+                Vous recevrez une notification lorsque votre consommation dépassera {limit_value} kWh.
             </div>
         </div>
     );

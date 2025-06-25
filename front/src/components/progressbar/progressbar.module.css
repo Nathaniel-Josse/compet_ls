@@ -1,5 +1,13 @@
 .bar {
     height: 100%;
-    background-color: #BDFF5F;
+    background-color: #1a75ff;
+}
 
+.thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #374151;
+  box-shadow: 0 0 4px #0002;
 }

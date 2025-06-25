@@ -107,13 +107,13 @@ const BlogPage: React.FC = () => {
                                         <span className={styles.blogDate}>
                                             {post.createdAt
                                                 ? new Date(post.createdAt).toLocaleDateString(
-                                                      "fr-FR",
-                                                      {
-                                                          day: "2-digit",
-                                                          month: "short",
-                                                          year: "numeric",
-                                                      }
-                                                  )
+                                                    "fr-FR",
+                                                    {
+                                                        day: "2-digit",
+                                                        month: "short",
+                                                        year: "numeric",
+                                                    }
+                                                )
                                                 : ""}
                                         </span>
                                     </div>

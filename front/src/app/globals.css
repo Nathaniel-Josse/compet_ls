@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --background: #1B1B1B;
+  --background: #000000;
   --foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #000000;
     --foreground: #ededed;
   }
-  .containerMinor {
-        width: 100%;
-    }
 }
 
-body {
+html, body, #__next {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Urbanist', Arial, ;
+  min-height: 100vh;
   height: 100%;
+  margin:0;
+  padding: 0;
   overflow-y: auto;
   padding-bottom: 70px;
 }
