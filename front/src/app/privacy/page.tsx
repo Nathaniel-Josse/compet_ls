@@ -1,9 +1,21 @@
 import React from "react";
 import styles from "./privacy.module.css";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function PrivacyPage() {
     return (
         <main className={styles.privacyContainer}>
+            <Link href="/" style={{ display: "inline-block" }}>
+                <Image
+                    src="/images/logo_lumea_rect_transp.webp"
+                    alt="Logo de Luméa"
+                    className={styles.logo}
+                    width={120}
+                    height={120}
+                    priority
+                />
+            </Link>
             <h1 className={styles.privacyTitle}>Politique de confidentialité</h1>
             <div className={styles.privacyText}><strong>Introduction</strong></div>
             <div className={styles.privacyText}>

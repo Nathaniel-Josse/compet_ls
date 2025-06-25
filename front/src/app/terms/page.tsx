@@ -1,9 +1,21 @@
 import React from "react";
 import styles from "./terms.module.css";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function TermsPage() {
     return (
         <main className={styles.termsContainer}>
+            <Link href="/" style={{ display: "inline-block" }}>
+                <Image
+                    src="/images/logo_lumea_rect_transp.webp"
+                    alt="Logo de Luméa"
+                    className={styles.logo}
+                    width={120}
+                    height={120}
+                    priority
+                />
+            </Link>
             <h1 className={styles.termsTitle}>MENTIONS LÉGALES</h1>
             <p className={styles.termsText}>
                 Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance en l&apos;économie numérique, il est précisé aux utilisateurs du site Luméa l&apos;identité des différents intervenants dans le cadre de sa réalisation et de son suivi.
