@@ -31,7 +31,7 @@ export default function Appareils() {
 
         const name = localStorage.getItem('user_name');
 
-        const data = localStorage.getItem(`appareils_${name}`) ;
+        const data = localStorage.getItem(`appareils_${name}`) || localStorage.getItem('appareils');
         if(data) {
             setAppareils(JSON.parse(data));
         }

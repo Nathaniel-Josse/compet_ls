@@ -38,12 +38,12 @@ export default function Login({}) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('tokenRefresh', data.refreshToken);
 
-            if (!localStorage.getItem(`appareils_${data.name}`)) {
-                localStorage.setItem(`appareils_${data.name}`, JSON.stringify(dataApp));
+            if (!localStorage.getItem(`appareils`)) {
+                localStorage.setItem(`appareils`, JSON.stringify(dataApp));
             } else {
-                const appareils = JSON.parse(localStorage.getItem(`appareils_${data.name}`) || '[]');
+                const appareils = JSON.parse(localStorage.getItem(`appareils`) || '[]');
                 if (appareils.length < dataApp.length) {
-                    localStorage.setItem(`appareils_${data.name}`, JSON.stringify(dataApp));
+                    localStorage.setItem(`appareils`, JSON.stringify(dataApp));
                 }
             }   
             localStorage.setItem('user_name', data.name);
