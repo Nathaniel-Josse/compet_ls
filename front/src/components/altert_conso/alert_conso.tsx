@@ -66,6 +66,13 @@ export default function Alert_conso() {
                     <div className={styles.alertConsoSubtitle}>
                         Moyenne nationale : 25 kWh/jour
                     </div>
+                    <div className={styles.alertConsoSubtitle}>
+                        Si vous voulez baisser votre consommation, vous pouvez vous rendre sur la page
+                        Appareils pour éteindre ou mettre en mode Éco vos appareils.
+                    </div>
+                    <div className={styles.alertConsoSubtitle}>
+                        Sinon vous pouvez également appeler le/la propriétaire de l&apos;habitat pour lui en parler.
+                    </div>
                 </div>
             </div> 
             <div  className={styles.alertConsoValue} style={{color: `#${background}`}}>
