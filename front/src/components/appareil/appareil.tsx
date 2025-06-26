@@ -29,7 +29,9 @@ export default function Appareils() {
             setCurrentView("accueil");
         }
 
-        const data = localStorage.getItem('appareils');
+        const name = localStorage.getItem('user_name');
+
+        const data = localStorage.getItem(`appareils_${name}`) ;
         if(data) {
             setAppareils(JSON.parse(data));
         }
@@ -54,7 +56,7 @@ export default function Appareils() {
             ? {
                 ...app,
                 state: states[
-                (states.indexOf(app.state || "auto") + 1) % states.length
+                (states.indexOf(app.state || "Auto") + 1) % states.length
                 ]
             }
             : app
@@ -71,8 +73,10 @@ export default function Appareils() {
             return "#0065FF"; // bleu
         case "Éteint":
             return "#4A4A4A"; // gris
-        default :
+        case "Auto":
             return "#4A4A4A"; // gris
+        default :
+            return "#0065FF"; // gris
     }
 };
 

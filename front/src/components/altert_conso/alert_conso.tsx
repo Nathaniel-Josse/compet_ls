@@ -64,7 +64,7 @@ export default function Alert_conso() {
                         Vous êtes dans le {color}
                     </div>
                     <div className={styles.alertConsoSubtitle}>
-                        Moyenne nationnalle : 25 kWh/jour
+                        Moyenne nationale : 25 kWh/jour
                     </div>
                 </div>
             </div> 
