@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './login.module.css';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -8,9 +8,20 @@ import dataApp from '@/app/data/appareils.json';
 export default function Login({}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-        const router = useRouter();
+    const router = useRouter();
 
+    useEffect(() => {
+        const checkAuth = () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                setIsAuthenticated(true);
+                router.push('/');
+            }
+        }
+        checkAuth();
+    }, []);
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         // Here you would typically send a request to your backend to authenticate the user
@@ -44,7 +55,7 @@ export default function Login({}) {
             alert('Erreur de connexion : ' + data.message);
         }
     }
-    return (
+    return isAuthenticated ? <div>Chargment...</div> : (
         <div className={styles.container}>
             <div>
                 <Image src="/images/logo_lumea_rect_transp.webp" alt="logo" width={0} height={0} sizes="30vw" style={{ width: '30vw', height: 'auto' }} />

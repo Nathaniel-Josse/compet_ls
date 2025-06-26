@@ -1,14 +1,27 @@
 'use client';
 import Image from "next/image";
 import styles from "./feedback.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
 
 export default function Feedback() {
     const [object, setObject] = useState('');
     const [content, setContent] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const checkAuth = () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setIsAuthenticated(false);
+                router.push('/login');
+                return;
+            }
+        };
+        checkAuth();
+}, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -54,7 +67,7 @@ export default function Feedback() {
         }
     };
 
-    return (
+    return isAuthenticated ? (
         <div className={styles.container}>
             <Image src="/images/logo_lumea_rect_transp.webp" alt="alt" width={1000} height={1000} />
             <form className={styles.form} onSubmit={handleSubmit}>
@@ -72,5 +85,5 @@ export default function Feedback() {
             </form>
             <Link href="/">Retour à l&apos;accueil </Link>
         </div>
-    )
+    ) : <div> Accès interdit. Veuillez-vous connecter.</div>
 }

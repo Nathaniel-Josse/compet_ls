@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import styles from "./blog.module.css";
+import { useRouter, usePathname } from "next/navigation";
 
 type Post = {
     _id: string;
@@ -21,6 +22,16 @@ const BlogPage: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const router = useRouter(); 
+    const pathname = usePathname();
+    
+    useEffect(() => {
+        const isLoggedIn = typeof window !== "undefined" && localStorage.getItem("token");
+        if (isLoggedIn && pathname !== "/") {
+            router.push("/");
+        }
+    }, [router]);
 
     useEffect(() => {
         const fetchPosts = async () => {

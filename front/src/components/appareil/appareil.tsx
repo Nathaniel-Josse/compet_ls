@@ -10,7 +10,7 @@ type Appareil = {
     filename: string;
     brand: string;
     value: string;
-    isOn: boolean;
+    state: string;
 };
 
 export default function Appareils() {
@@ -36,8 +36,8 @@ export default function Appareils() {
     }, []);
 
     const total = appareils.length;
-    const allumes = appareils.filter(a => a.isOn).length;
-    const eteints = appareils.filter(a => !a.isOn).length;
+    const eteints = appareils.filter(a => a.state === "Éteint").length;
+    const allumes = total-eteints;
 
     // En fonction de currentView, on sélectionne les appareils à afficher
     const appareilsToShow =
@@ -47,13 +47,34 @@ export default function Appareils() {
         return null;
     }
 
-    const toggleAppareil = (id: number) => {
+    const changeButtonStyle = (id: number) => {
+        const states = ["Auto", "Éco", "Confort", "Éteint"];
         const updated = appareils.map(app =>
-            app.id === id ? { ...app, isOn: !app.isOn } : app
+            app.id === id
+            ? {
+                ...app,
+                state: states[
+                (states.indexOf(app.state || "auto") + 1) % states.length
+                ]
+            }
+            : app
         );
         setAppareils(updated);
         localStorage.setItem('appareils', JSON.stringify(updated));
     };
+
+    const getStateColor = (state: string) => {
+    switch (state) {
+        case "Éco":
+            return "#4EC34F"; // vert
+        case "Confort":
+            return "#0065FF"; // bleu
+        case "Éteint":
+            return "#4A4A4A"; // gris
+        default :
+            return "#4A4A4A"; // gris
+    }
+};
 
 
     return (
@@ -88,7 +109,7 @@ export default function Appareils() {
                 </>
             )}
             <div className={styles.blocksGrid}>
-                {appareilsToShow.map(({ id, name, filename, value, brand, isOn }) => (
+                {appareilsToShow.map(({ id, name, filename, value, brand, state }) => (
                 <div key={id} className={styles.block}>
                     <div className={styles.topRow}> 
                         <Image src={`/images/appareils/${filename}.webp`} alt='Default' width={64} height={64}/>
@@ -99,14 +120,9 @@ export default function Appareils() {
                             <span className="block font-medium text-white truncate whitespace-nowrap overflow-hidden"> {name} </span>
                             <span className="block text-sm text-gray-400 truncate whitespace-nowrap overflow-hidden"> {brand} </span>
                         </div>
-                        <div className={styles.sliderWrapper}>
-                            <label className={styles.switch}>
-                                <input type="checkbox" checked={isOn} onChange={() => toggleAppareil(id)}/>
-                                <span className={styles.slider} >
-                                    <span className={styles.powerIcon}><Image src='images/power.svg' alt='Default' width={16} height={16}  /></span>
-                                </span>
-                            </label>
-                        </div>
+                    </div>
+                    <div className={styles.bottomRow}>
+                        <button className={styles.button} onClick={() => changeButtonStyle(id)} style={{background: getStateColor(state)}}>{state}</button>
                     </div>
                 </div>
             ))}

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import BlogPage from "../blog/page";
 import styles from "./home.module.css";
 import {useEffect, useState} from "react";
@@ -7,6 +6,7 @@ import Types from "@/components/types/types";
 import Profil from "@/components/profil/profil";
 import Appareils from "@/components/appareil/appareil";
 import Graph_bar from "@/components/graph_bar/graph_bar";
+import Alert_conso from "@/components/altert_conso/alert_conso";
 import Consommation from "@/components/consommation/consommation";
 import Efficacite from "@/components/efficacite_energie/efficacite_energie";
 
@@ -25,6 +25,8 @@ type StatsData = {
     }
     dailyConsumption: number;
 };
+
+
 
 export default function Home({currentView}: HomeProps) {
     const [data, setData] = useState<StatsData | null>(null);
@@ -110,12 +112,14 @@ export default function Home({currentView}: HomeProps) {
                     <div>
                         <header className={styles.header}>
                                 <div className={styles.logoContainer}>
-                                    <h1 className={styles.welcome}>Ma Consommation</h1>
-                                    <h2 className={styles.text}>Surveillez votre conso et son coût</h2>
+                                <h1 className={styles.welcome}>Ma Consommation</h1>
+                                <h2 className={styles.text}>Surveillez votre conso et son coût</h2>
                                 </div>
-                            </header>
+                        </header>
+                        <Alert_conso />
                         <Graph_bar />
-                        <Types /></div>
+                        <Types />
+                    </div>
                 );
             case "profil":
                 return <div>
@@ -135,24 +139,13 @@ export default function Home({currentView}: HomeProps) {
                                     <h2 className={styles.text}>Bonjour,</h2>
                                     <h1 className={styles.welcome}>{user?.name}</h1>
                                 </div>
-                                <button className={styles.iconContainer}>
-                                    <Image
-                                    src="/images/Bell.svg"
-                                    alt="Paramètres"
-                                    fill
-                                    sizes="(max-width: 600px) 24px, 6vw"
-                                    style={{ objectFit: "contain" }}
-                                    />
-                                </button>
                             </header>
-                            <main className={styles.main}>
                                 <div>
-                                    {data && <Efficacite limit_value={data.stats.limit} daily={data.dailyConsumption} />}
+                                    {data && <Efficacite limit_value={data.stats.limit}/>}
                                     <Graph_bar />
                                     <Appareils />
                                     <Consommation />
                                 </div>
-                            </main>
                         </div>
                     </div>
                 );

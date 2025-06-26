@@ -1,13 +1,15 @@
 import Image from 'next/image';
 import styles from './efficacite_energie.module.css';
 import ProgressBar from '../progressbar/progress';
+import { useState } from 'react';
 
 interface EfficaciteProps {
     limit_value: number;
-    daily : number;
 }
 
-export default function Efficacite({limit_value, daily}: EfficaciteProps) {
+export default function Efficacite({limit_value}: EfficaciteProps) {
+    const [value, setValue] = useState(limit_value);
+
     return (
         <div className={styles.containerMajor}>
             <div>
@@ -18,7 +20,6 @@ export default function Efficacite({limit_value, daily}: EfficaciteProps) {
                         <input type="checkbox" defaultChecked/>
                         <span className={styles.slider}>
                             <span className={styles.powerIcon}>
-                                <Image src='images/power.svg' alt='Default' width={16} height={16} />
                             </span>
                         </span>
                     </label>
@@ -27,14 +28,14 @@ export default function Efficacite({limit_value, daily}: EfficaciteProps) {
             <div className={styles.barContainer}>
                 <div className={styles.row}>
                     <div className="mb-2">Seuil de consommation</div>
-                    <div>{limit_value} kWh</div>
+                    <div>{value} kWh</div>
                 </div>
                 <div>
-                    <ProgressBar value={daily} limit={limit_value}/>
+                    <ProgressBar limit={limit_value} onChange={setValue}/>
                 </div>
             </div>
             <div className={styles.containerMinor}>
-                Vous recevrez une notification lorsque votre consommation dépassera {limit_value} kWh.
+                Vous recevrez une notification lorsque votre consommation dépassera {value} kWh.
             </div>
         </div>
     );

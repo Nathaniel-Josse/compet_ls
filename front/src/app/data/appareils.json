@@ -5,7 +5,7 @@
     "filename": "robot-aspirateur",
     "brand": "Dyson 11Absolute",
     "value": "50%",
-    "isOn": true
+    "state" : "Confort"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "filename": "ampoule-connectee",
     "brand": "Ohillips Hue White",
     "value": "40%",
-    "isOn": true
+    "state" : "Confort"
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "filename": "ampoule-connectee",
     "brand": "Philips Hue Color",
     "value": "30%",
-    "isOn": true
+    "state" : "Confort"
   },
   {
     "id": 4,
@@ -29,7 +29,7 @@
     "filename": "climatiseur",
     "brand": "Dyson Pure Cool",
     "value": "20°C",
-    "isOn": true
+    "state" : "Confort"
   },
   {
     "id": 5,
@@ -53,7 +53,7 @@
     "filename": "machine-a-cafe",
     "brand": "Nespresso Vertuo",
     "value": "80%",
-    "isOn": true
+    "state" : "Confort"
   },
   {
     "id": 8,
@@ -61,6 +61,6 @@
     "filename": "radiateur",
     "brand": "DE'Longhi Easy",
     "value": "17°C",
-    "isOn": true
+    "state" : "Confort"
   }
 ]

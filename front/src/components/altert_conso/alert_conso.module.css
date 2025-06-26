@@ -1,0 +1,41 @@
+.container {
+  border-radius: 0.75em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  width: 96%;
+  border: 1px solid;
+  padding: 1rem;
+  margin-bottom: 1em;
+  gap: 0.5rem;
+}
+
+.alertConsoIcon {
+  margin-right: 12px; /* espace entre icône et texte */
+  display: flex;
+  align-items: center;
+}
+
+.alertConsoLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.alertConsoTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-right: 1em; /* espace entre le texte et la valeur */
+}
+
+.alterConsoSubtitle {
+  font-size: 0.5rem;
+  color: #DCDCDC;
+}
+
+.alertConsoValue {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-left: 2em; /* espace avec le bloc central */
+}

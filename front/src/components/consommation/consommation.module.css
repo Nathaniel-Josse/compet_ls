@@ -7,7 +7,7 @@
   height: 100%;
   margin-top: 0.5em auto; /* réduit le margin */
   margin-bottom: 0.5em auto;
-  padding: 0.5rem; /* réduit le padding */
+  padding: 1rem; /* réduit le padding */
 }
 
 .title {

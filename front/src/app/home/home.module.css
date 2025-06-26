@@ -4,32 +4,14 @@
   justify-content: space-between;
   /* padding: 1rem; */
   padding: 1rem;
-}
-
-.iconContainer {
-  width: clamp(32px, 5vw, 56px);
-  height: clamp(32px, 5vw, 56px);
-  position: relative;
-  background: #4A4A4A;
-  border-radius: 0.45em;
+  width: 98%;
 }
 
 .logoContainer {
   position: relative;
-  width: 100%;         /* Prend toute la largeur du parent */
+  width: 98%;         /* Prend toute la largeur du parent */
   aspect-ratio: unset; /* Optionnel : retire le ratio si tu veux que le texte prenne la largeur */
   height: auto;      /* pas besoin si aspect-ratio est là */
-}
-
-.profilButton {
-  background: none;
-  border: none;
-  color: #E8E8E8;
-}
-
-.homeLogo {
-  max-height: 60px;
-  object-fit: contain;
 }
 
 

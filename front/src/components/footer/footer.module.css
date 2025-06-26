@@ -4,6 +4,11 @@
     text-align: center;
     border-top: 1px solid #e0e0e0;
     margin-top: 40px;
+
+    position: relative;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
 }
 
 .links {

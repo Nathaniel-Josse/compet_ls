@@ -23,8 +23,9 @@ export default function RootLayout({
       <body
         className={`${urbanist.variable} antialiased`}
       >
-        {children}
-        <Footer />
+        
+          {children}
+          <Footer />
       </body>
     </html>
   );

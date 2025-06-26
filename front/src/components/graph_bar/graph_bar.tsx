@@ -5,6 +5,7 @@ import React from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, Legend, Filler, } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Timestamp } from 'next/dist/server/lib/cache-handlers/types';
+import Image from 'next/image';
 
 // Define the StatsData type according to expected data structure
 type StatsData = {
@@ -161,6 +162,7 @@ export default function Graph_bar() {
     const chartData = getChartData();
 
     return (
+        <>
         <div className={styles.container}>
             {currentView === "accueil" && (
                 <div className={styles.titre}>
@@ -170,7 +172,7 @@ export default function Graph_bar() {
             <div className={styles.sujet}>
                 <div>
                     <div>
-                        {date.toLocaleDateString("fr-FR", {weekday: "long",})},
+                        {date.toLocaleDateString("fr-FR", { weekday: "long" }).charAt(0).toUpperCase() + date.toLocaleDateString("fr-FR", { weekday: "long" }).slice(1)}
                     </div>
                     <div className={styles.date}>
                         {date.toLocaleDateString("fr-FR", {year: "numeric", month: "long", day: "numeric",})}
@@ -207,6 +209,17 @@ export default function Graph_bar() {
                     )}
                 </div>
             </div>
+            <div>
+            </div>
+            {currentView === "stats" && (
+                
+                <div className="flex flex-col items-center mt-">
+                    <hr></hr>
+                    <br></br>
+                    <Image  src="/images/graph_national.webp" alt="line_graph" height={1020} width={375}/>
+                </div>
+            )}
         </div>
+     </>
     );
 }

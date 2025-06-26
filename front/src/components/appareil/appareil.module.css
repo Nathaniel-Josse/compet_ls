@@ -98,68 +98,16 @@
   color: #FFFFFF;
 }
 
-.sliderWrapper {
-  /* width: 100%; */
+.bottomRow {
   display: flex;
-  justify-content: flex-end;
-}
-
-@media (max-width: 600px) {
-  .middleRow {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.3rem;
-  }
-  .sliderWrapper {
-    justify-content: flex-start; /* le slider passe à gauche */
-    align-self: flex-start;
-    margin-top: 0.3rem;
-  }
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 20px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 20px;
-  display: flex;
+  justify-content: space-between;
   align-items: center;
+  color: #FFFFFF;
 }
 
-.powerIcon {
-  position: absolute;
-  left: 2px;
-  top: 2px;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  transition: transform .4s;
-  z-index: 2;
-}
-
-.switch input:checked + .slider .powerIcon {
-  transform: translateX(16px);
-}
-
-.switch input:checked + .slider {
-  background-color: #064ab5;
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.85em;
+  width: 100%;
 }
